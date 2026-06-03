@@ -1,0 +1,16 @@
+.git
+.github
+.cursor
+.vscode
+node_modules
+vendor
+
+backups
+logs
+
+*.log
+*.tmp
+*.cache
+*.swp
+
+.env

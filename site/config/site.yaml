@@ -1,0 +1,20 @@
+﻿# Parsed as key: value lines (see bootstrap.php)
+web_base:
+brand: Basalt Cheats
+logo_path: assets/img/components/logo.png
+favicon_path: assets/img/components/favicon.ico
+tagline_ru: Приватные читы и модули
+tagline_en: Private cheats and modules
+default_lang: ru
+telegram_url: https://t.me/basalt_cheats
+telegram_handle: "@basalt_cheats"
+discord_url: https://discord.com/invite/basalt_cheats
+github_url: https://github.com/wh1sper-basalt
+support_email: support@basalt.local
+payment_receiver: BASALT PAY — requisites on invoice
+company_name_ru: ООО «Базальт Читс»
+company_name_en: Basalt Cheats LLC
+company_inn: 7700670052
+company_address_ru: г. Москва, Пресненская наб., д. 12, офис 404
+company_address_en: Moscow, Presnenskaya emd. 12, office 404
+map_embed_src: https://yandex.ru/map-widget/v1/?ll=37.537201%2C55.750024&z=16&mode=search&text=Federation%20Tower%2C%20Moscow

@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: basalt_root
+      DB_NAME: basalt_cheats
+    volumes:
+      - ./site:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: basalt_root
+      MYSQL_DATABASE: basalt_cheats
+    ports:
+      - "3308:3306"
+    volumes:
+      - basalt_mysql:/var/lib/mysql
+      - ./site/database/FULL.sql:/docker-entrypoint-initdb.d/01-full.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pbasalt_root"]
+      interval: 6s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  basalt_mysql:

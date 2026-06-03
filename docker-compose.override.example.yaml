@@ -1,0 +1,5 @@
+# Copy to docker-compose.override.yaml to tweak local ports or mounts.
+services:
+  web:
+    ports:
+      - "8888:80"

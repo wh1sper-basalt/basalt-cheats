@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  php-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP version
+        run: php -v
+      - name: Lint PHP files under site/
+        run: |
+          set -e
+          while IFS= read -r -d '' file; do
+            php -l "$file"
+          done < <(find ./site -name '*.php' -print0)

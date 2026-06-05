@@ -1,4 +1,4 @@
-# Basalt Cheats (official)
+# Basalt Cheats (education version)
 
 Многостраничная витрина магазина приватных читов: **PHP + MySQL**, RU/EN, покупка по цепочке **игры → модули → планы → checkout**.
 

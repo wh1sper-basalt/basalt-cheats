@@ -93,4 +93,4 @@ official/
 
 ## License
 
-MIT — см. `LICENSE`.
+MIT LICENSE.

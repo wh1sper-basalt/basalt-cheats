@@ -1,0 +1,641 @@
+/*------------------------ ОБЩИЕ НАСТРОЙКИ ------------------------*/
+
+/* 
+  загружаем набор шрифтов с сайта GoogleFonts 
+  делаем это в самом начале файла, чтобы шрифты отображались без задержек
+*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+/* 
+настраиваем подход к отображению блоков, при котором 
+в общую ширину включаются поля и толщина границы
+*/
+*,
+::after,
+::before {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Roboto", "Arial", sans-serif;
+	background-color: #fcfbfa;
+	color: #39312d; /*настраиваем единый цвет для текста, будем менять его по мере необходимости непосредственно для конкретных блоков и элементов*/
+}
+
+/* настраиваем контентную часть, общую для всех секций*/
+
+.content {
+	display: flex; /* превращаем блок в гибкий контейнер */
+	align-items: center; /* выравниваем содержимое по вертикали по центру */
+	justify-content: center; /* а теперь по горизонтали по центру */
+	flex-wrap: wrap; /* задаем вывод элементов в несколько строк с переносами */
+	width: 90%; /* ширина блока в процентах от родительского */
+	margin: 0 auto; /* настраиваем внешние отступы сверху и сбоку*/
+	padding: 1em; /* все поля внутри блока по 1 em */
+	text-align: center; /*выравниваем текстовое содержимое по центру*/
+}
+
+/* ---- настройка ссылок ---- */
+a {
+	text-decoration: none; /* убираем стандартное подчеркивание для ссылок */
+	font-size: 1rem; /* задаем размер текста */
+}
+
+/* задаем поведение при наведении */
+a:hover {
+	text-decoration: underline; /* добавляем подчеркивание */
+}
+
+/* для всех списков внутри блоков с навигацией */
+nav ul {
+	list-style: none; /* убираем маркеры в списке */
+	padding: 0; /* очищаем стандартные отступы для списков */
+}
+
+/* ---- настройка header ---- */
+
+header {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 0.5rem;
+}
+
+header a {
+	color: #39312d; /* отдельно задаем цвет ссылкам в шапке страницы */
+}
+
+header img.logo {
+	width: 20vw; /* ширину логотипа устанавливаем в процентах от размера экрана */
+}
+
+/* 
+для экранов больше 768px и далее меняем настройки: увеличиваем размер шрифта 
+а для изображений размер экрана увеличивается, значит ширину в процентах уменьшаем
+*/
+@media (min-width: 768px) {
+	header a {
+		font-size: 1.2rem;
+	}
+	header img.logo {
+		width: 15vw;
+	}
+}
+
+@media (min-width: 1024px) {
+	header a {
+		font-size: 1.5rem;
+	}
+	header img.logo {
+		width: 12vw;
+	}
+}
+
+@media (min-width: 1440px) {
+	header a {
+		font-size: 2rem;
+	}
+	header .logo {
+		width: 10vw;
+	}
+}
+
+/* отдельно настраиваем меню для шапки сайта */
+header nav ul {
+	display: flex; /* превращаем элемент во flex-контейнер */
+	align-self: center;
+	flex-wrap: wrap;
+	padding-left: 1rem;
+}
+header nav ul li {
+	margin-right: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+/* ---- настройка баннера на главной и прочих страницах ---- */
+
+section.banner {
+	min-height: 20vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	/*краткая запись свойств background-image, background-position, background-size */
+	background: url("../img/banner-bg.jpg") center/cover;
+	color: #fcfbfa;
+}
+
+/* для заголовков добавляем тень */
+section.banner h1,
+section.banner h2 {
+	text-shadow: 0px 6px 6px #000000;
+}
+
+section.banner h1 {
+	font-size: 1.5rem;
+}
+
+section.banner h2 {
+	font-size: 1rem;
+	font-style: italic; /* курсивное начертание */
+}
+
+section.banner .content {
+	display: block; /* меняем установленный для всех блоков  с контентом режим отображения с гибкого на блочный */
+}
+
+/* 
+для баннера на главной странице увеличиваем высоту
+для заголовков размер шрифта
+*/
+
+@media (min-width: 590px) {
+	section.banner.first {
+		min-height: 30vw;
+	}
+
+	section.banner h1 {
+		font-size: 3rem;
+	}
+	section.banner h2 {
+		font-size: 1.5rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	section.banner.first {
+		min-height: 40vw;
+	}
+
+	section.banner h1 {
+		font-size: 4rem;
+	}
+	section.banner h2 {
+		font-size: 2rem;
+	}
+}
+
+@media (min-width: 1440px) {
+	section.banner h1 {
+		font-size: 6rem;
+	}
+	section.banner h2 {
+		font-size: 4rem;
+	}
+}
+
+/*---- настройка блока footer ----*/
+
+footer {
+	background: #39312d; /* задаем фоновый цвет для подвала */
+	color: #fcfbfa;
+	font-size: 1rem;
+}
+
+footer a {
+	color: #fcfbfa;
+}
+
+footer .footer__menu nav ul li {
+	padding-bottom: 1rem;
+}
+
+@media (min-width: 590px) {
+	footer .footer__main {
+		width: 100%;
+		display: flex;
+		justify-content: space-between; /* устанавливаем равные промежутки между содержимым блока */
+	}
+}
+
+/*------------------------ СТРАНИЦА INDEX.HTML ------------------------*/
+
+/*---- настройка блока advantages ----*/
+
+.advantages {
+	background: #39312d;
+	color: #fcfbfa;
+}
+
+.advantages .content {
+	justify-content: space-between;
+}
+
+.advantages .advantage img {
+	margin: 0 auto;
+	max-width: 80%;
+}
+
+/* скрываем текст в блоке */
+.advantages .advantage p {
+	display: none;
+}
+
+@media (min-width: 768px) {
+	.advantages .advantage {
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* и показываем его на экранах больше 768px */
+	.advantages .advantage p {
+		display: inline-block;
+	}
+}
+
+/*на экранах больше 1024px добавляем анимацию к изображениям при наведении*/
+@media (min-width: 1024px) {
+	.advantages .advantage img {
+		transition: all 0.8s ease-in-out; /* настраиваем параметры анимации для всех изменяемых свойств */
+	}
+
+	.advantages .advantage img:hover {
+		transform: scale(1.3); /* при наведении увеличиваем размер изображения с коэффициентом 1.3 */
+	}
+}
+
+/*------------ настройка блока select ------------*/
+
+.select,
+.reviews {
+	background: linear-gradient(175deg, #fcfbfa, #39312d00), url("../img/select-bg.png");
+}
+
+.select .select__cakes .select__cake {
+	margin-bottom: 1rem;
+}
+
+.select .select__cakes .select__cake a {
+	display: block;
+	width: 100%;
+	padding: 1rem;
+	background: #39312d;
+	border: 3px solid #39312d; /* задаем сплошную границу толщиной 3px указанным цветом*/
+	color: #fcfbfa;
+	text-decoration: none;
+	cursor: pointer; /* курсор меняется со стандартной стрелки на указатель */
+}
+
+.select .select__cakes .select__cake img {
+	width: 100%;
+}
+
+@media (min-width: 425px) {
+	h2 {
+		font-size: 2rem;
+		width: 100%;
+	}
+}
+/* 
+для устройств шириной больше 590px устанавливаем гибкий тип блока 
+и размещаем карточки для выбора услуги в один ряд
+*/
+
+@media (min-width: 590px) {
+	.select .select__cakes {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.select .select__cakes .select__cake {
+		width: 45%;
+	}
+	.select .select__cakes .select__cake a {
+		font-size: 1.2rem;
+	}
+}
+
+/* добавляем анимацию к кнопкам */
+
+@media (min-width: 1024px) {
+	.select .select__cakes .select__cake button {
+		transition: background 0.8s ease-out;
+	}
+
+	.select .select__cakes .select__cake a:hover {
+		background: #fcfbfa;
+		color: #39312d;
+	}
+}
+
+
+/*----------- настройка блока about ----------*/
+.about {
+	background: url("../img/about-bg.jpg") center/cover;
+}
+
+.about .about__wrap {
+	padding: 1rem;
+	background: rgba(0, 0, 0, 0.5);
+	color: #fcfbfa;
+	font-size: 1rem;
+}
+
+.about .about__text p {
+	padding-bottom: 1rem;
+	text-align: center;
+	font-style: italic;
+}
+
+@media (min-width: 590px) {
+	.about .about__wrap {
+		font-size: 1.5rem;
+	}
+}
+
+@media (min-width: 768px) {
+	.about .about__wrap {
+		width: 50%;
+	}
+}
+
+@media (min-width: 1440px) {
+	.about .about__wrap {
+		font-size: 2rem;
+	}
+}
+
+/*----------- настройка блока review ----------*/
+
+.reviews .content .review img {
+	display: none;
+}
+
+.reviews .content .review .review__text {
+	display: flex;
+	align-items: center;
+	margin: 1rem;
+	background: linear-gradient(135deg, #fcfbfa 50%, #f0f0ef 50%);
+	border: 1px solid #39312d18;
+	font-style: italic;
+}
+
+.reviews .content .review .review__text blockquote {
+	padding: 0.5rem;
+	margin: 0.5rem;
+}
+
+@media (min-width: 590px) {
+	.reviews .content .review .review__text blockquote {
+		font-size: 1.2rem;
+	}
+}
+@media (min-width: 768px) {
+	.reviews .content .review {
+		display: flex;
+	}
+	.reviews .content .review img {
+		display: block;
+		width: 10rem;
+		height: 10rem;
+		margin-bottom: 0.5rem;
+		border-radius: 50%; /* делаем изображения круглыми средствами css */
+	}
+}
+@media (min-width: 1440px) {
+	.reviews .content .review .review__text blockquote {
+		font-size: 1.8rem;
+	}
+}
+
+/*----------- настройка блока feedback ----------*/
+.feedback {
+	background: url("../img/feedback-bg.jpg") center/cover;
+	color: #fcfbfa;
+}
+
+.feedback a,
+.feedback h4 {
+	color: #fcfbfa;
+	width: 90%;
+}
+
+.feedback h3 {
+	margin: 1rem;
+	font-size: 1.5rem;
+}
+
+.feedback form input {
+	width: 100%;
+	margin-bottom: 0.5rem;
+	padding: 1rem;
+	background: transparent; /* два последних символа определяют прозрачность */
+	border: 2px solid #fcfbfa;
+	color: #fcfbfa;
+}
+
+/*настраиваем цвет для справочного текста внутри поля для ввода*/
+.feedback form input::placeholder {
+	color: #fcfbfa;
+}
+
+/* скрываем кнопку загрузки файла и настраиваем вид для связанной с ней метки */
+.feedback form .form__download input[type="file"] {
+	display: none;
+}
+.feedback form .form__download label[for="download"] {
+	text-decoration: underline;
+}
+
+.feedback form .form__submit {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+/* настроим оформление для флажка */
+.feedback form .form__submit input[type="checkbox"] {
+	appearance: none;
+	position: relative;
+	min-height: 2rem;
+	width: 2rem;
+	margin-right: 1rem;
+	margin-bottom: 0;
+}
+
+/* добавляем новый значок для выбранного checkbox-а */
+.feedback form .form__submit input[type="checkbox"]::before {
+	visibility: hidden;
+	position: absolute;
+	content: "\2714";
+	color: #fcfbfa;
+	font-size: 2.2em;
+	left: 0;
+	top: -5px;
+}
+
+/* показываем значок если checkbox выбран */
+.feedback form .form__submit input[type="checkbox"]:checked::before {
+	visibility: visible;
+}
+
+.feedback form input[type="submit"] {
+	background: #39312d;
+	margin-top: 1.5rem;
+	cursor: pointer;
+}
+
+@media (min-width: 768px) {
+	.feedback {
+		font-size: 1.2rem;
+	}
+	.feedback h3 {
+		font-size: 3rem;
+	}
+}
+
+/*----------- настройка блока map ----------*/
+
+.map iframe {
+	width: 100%;
+	height: 400px;
+}
+
+/*------------------------ СТРАНИЦА CAKES.HTML ------------------------*/
+.cakes .cake {
+	width: 90%;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	background: #39312d;
+	color: #fcfbfa;
+}
+
+.cakes .cake .cake__descript img {
+	max-width: 90%;
+}
+
+.cakes .cake .cake__buy {
+	padding: 0.5rem;
+}
+.cakes .cake .cake__buy a {
+	display: inline-block;
+	width: 90%;
+	padding: 1rem;
+	border: 1px solid #fcfbfa;
+	color: #fcfbfa;
+	font-size: 1rem;
+}
+
+.cakes .cake .cake__buy ul {
+	list-style-position: inside; /*настраиваем положение маркеров*/
+	padding-left: 0;
+}
+
+@media (min-width: 768px) {
+	.cakes .cake .cake__buy .cake__buy__wrap {
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: space-around;
+	}
+}
+
+@media (min-width: 1024px) {
+	.cakes .cake .cake__descript {
+		display: flex;
+	}
+	.cakes .cake .cake__buy {
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: space-evenly;
+		align-items: center;
+		margin-top: 1.5rem;
+	}
+	.cakes .cake .cake__buy a {
+		display: inline-block;
+		width: 30%;
+		height: min-content;
+		transition: all 0.8s ease-in; /*настраиваем параметры анимации для всех изменяемых свойств*/
+	}
+
+	.cakes .cake .cake__buy a:hover {
+		text-decoration: none;
+		background: #fcfbfa;
+		color: #39312d;
+		transform: scale(1.2);
+	}
+}
+
+@media (min-width: 1200px) {
+	.cakes .cake {
+		font-size: 1.5rem;
+	}
+	.cakes .cake .cake__buy a {
+		font-size: 2rem;
+	}
+}
+/*------------------------ СТРАНИЦА FILLINGS.HTML ------------------------*/
+.fillings {
+	text-align: center;
+}
+
+.fillings .content a {
+	color: #39312d;
+	font-size: 2rem;
+}
+
+.fillings .filling {
+	margin: 1rem;
+	font-weight: 700;
+}
+
+.fillings .filling img {
+	margin-bottom: 1rem;
+	border-radius: 50%;
+	filter: sepia(75%);
+}
+
+.fillings .filling img:hover,
+.fillings .filling img:active {
+	filter: sepia(0);
+}
+
+@media (min-width: 768px) {
+	.fillings h2 {
+		font-size: 3rem;
+	}
+	.fillings .content a {
+		font-size: 3.5rem;
+	}
+}
+/*------------------------ СТРАНИЦА DELIVERY.HTML ------------------------*/
+
+.delivery h1 {
+	font-size: 1.5rem;
+}
+
+.delivery .delivery__about {
+	display: none;
+}
+
+.delivery .delivery__price table {
+	max-width: 100%;
+	border-collapse: collapse; /*для таблиц схлопываем границы*/
+	font-size: 0.7rem;
+	font-style: italic;
+}
+
+.delivery .delivery__price table thead tr {
+	border-bottom: 3px solid #39312d;
+}
+
+.delivery .delivery__price table tr td {
+	padding: 0.5rem;
+}
+
+@media (min-width: 425px) {
+	.delivery .delivery__price table {
+		font-size: 1rem;
+	}
+}
+@media (min-width: 590px) {
+	.delivery .delivery__price table {
+		font-size: 1.2rem;
+	}
+}
+@media (min-width: 768px) {
+	.delivery .delivery__price table {
+		font-size: 1.5rem;
+	}
+}

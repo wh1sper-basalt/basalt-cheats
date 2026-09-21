@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Static file demo</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">← На главную</a>
+    <span class="muted">static file: /hello.html</span>
+  </header>
+  <main class="wrap">
+    <h1>Статический файл</h1>
+    <p class="muted">
+      Эта страница отдана Express через <code>express.static('public')</code>.
+      Каталог <code>public/</code> в URL не участвует — путь начинается сразу с имени файла.
+    </p>
+    <p class="muted">
+      Проверьте также: <a href="/style.css">/style.css</a>.
+    </p>
+  </main>
+</body>
+</html>

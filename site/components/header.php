@@ -119,6 +119,19 @@ $bodyClass = trim((string) ($bodyClass ?? ''));
                             <a href="<?= h(asset('regions.php')) ?>"><?= h(__('nav.regions')) ?></a>
                             <a href="<?= h(asset('operations.php')) ?>"><?= h(__('nav.operations')) ?></a>
                             <a href="<?= h(asset('history.php')) ?>"><?= h(__('nav.history')) ?></a>
+                            <a href="<?= h(asset('index-db-blocks.php')) ?>"><?= h(__('nav.indexdb')) ?></a>
+                            <a href="<?= h(asset('iframe-target-lab.php')) ?>"><?= h(__('nav.iframe_lab')) ?></a>
+                            <a href="<?= h(asset('practice10.php')) ?>"><?= h(__('nav.practice10')) ?></a>
+                            <a href="<?= h(asset('practice10-sweetty-79.php')) ?>"><?= h(__('nav.practice10_79')) ?></a>
+                            <a href="<?= h(asset('practice10-sweetty-710.php')) ?>"><?= h(__('nav.practice10_710')) ?></a>
+                            <a href="<?= h(asset('practice11.php')) ?>"><?= h(__('nav.practice11')) ?></a>
+                            <a href="<?= h(asset('practice11-cities.php')) ?>"><?= h(__('nav.practice11_cities')) ?></a>
+                            <a href="<?= h(asset('practice12-async.php')) ?>"><?= h(__('nav.practice12')) ?></a>
+                            <a href="<?= h(asset('practice13.php')) ?>"><?= h(__('nav.practice13')) ?></a>
+                            <a href="<?= h(asset('practice14.php')) ?>"><?= h(__('nav.practice14')) ?></a>
+                            <a href="<?= h(asset('validation-lab.php')) ?>"><?= h(__('nav.validation')) ?></a>
+                            <a href="<?= h(asset('runtime-demo.php')) ?>"><?= h(__('nav.runtime')) ?></a>
+                            <a href="<?= h(asset('support-console.php')) ?>"><?= h(__('nav.console')) ?></a>
                         </div>
                     </nav>
                 </div>

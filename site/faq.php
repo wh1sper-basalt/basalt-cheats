@@ -67,7 +67,7 @@ $faqRows = [
                 <span class="ws-acc-chev" aria-hidden="true"></span>
             </summary>
             <div class="ws-acc-body">
-                <div class="ws-acc-body-inner">
+                <div class="ws-acc-body-inner faq-map-block">
                     <p><?= $isEn
                         ? 'No. Basalt Cheats publishes legal details, a physical office address, and a verifiable map pin. Payments use a unique QR session tied to your cart (game + cheat + subscription term).'
                         : 'Нет. Basalt Cheats публикует реквизиты, адрес офиса и точку на карте. Оплата — уникальная QR-сессия, привязанная к корзине (игра + чит + срок подписки).' ?></p>

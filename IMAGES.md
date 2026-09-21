@@ -2,7 +2,12 @@
 
 Все пути **относительно каталога `site/`**, если не указано иное. В SQL и PHP используйте пути без ведущего `/`.
 
-**Конвенция:** обложки каталога — **WebP**; альбомы на странице покупки (`cheat.php`) — только **PNG 1920×1080**, соотношение **16:9** (`assets/img/cheats/albums/{slug}-01.png` … `-03.png`). Файлы могут отсутствовать в репозитории до загрузки дизайнером.
+**Конвенция:** для каждого `cheats.slug` — **три WebP 16:9** в одном каталоге:
+
+- обложка каталога / chronicle / `cheats.image_path`: `assets/img/cheats/albums/{slug}-001.webp`
+- слайдер на `cheat.php`: `-001.webp`, `-002.webp`, `-003.webp` (таблица `cheat_media`)
+
+Файлы могут отсутствовать в репозитории до загрузки дизайнером.
 
 ---
 
@@ -14,8 +19,6 @@
 | `assets/img/components/logo.png` | Логотип (`site.yaml` → `logo_path`) |
 | `assets/img/components/favicon.ico` | Favicon (`site.yaml` → `favicon_path`) |
 | `assets/img/components/icon.ico` | Запасная иконка (если используется) |
-| `assets/img/components/account-icon.svg` | Иконка аккаунта в шапке |
-| `assets/img/components/telegram-logo.svg` | Иконка Telegram в шапке и подвале |
 
 ---
 
@@ -47,38 +50,17 @@
 
 ---
 
-## Обложки модулей (`assets/img/cheats/*.webp`)
+## Альбомы и обложки модулей (`assets/img/cheats/albums/`)
 
-| Файл | Примеры slug в БД |
-|------|-------------------|
-| `assets/img/cheats/rust-pro.webp` | basalt-pro, basalt-radar, … |
-| `assets/img/cheats/rust-lite.webp` | basalt-lite, basalt-stealth, … |
-| `assets/img/cheats/eft-raid.webp` | edge-raid, night-ops, … |
-| `assets/img/cheats/eft-econ.webp` | silent-econ, map-room, … |
-| `assets/img/cheats/fn-storm.webp` | storm-build, match-pro, … |
-| `assets/img/cheats/fn-nimbus.webp` | nimbus-build, match-lite, … |
-| `assets/img/cheats/hwid-core.webp` | spoofer-core |
-| `assets/img/cheats/hwid-pro.webp` | spoofer-pro |
-| `assets/img/cheats/nfa-cs2.webp` | nfa-cs2 |
-| `assets/img/cheats/nfa-fortnite.webp` | nfa-fortnite |
-| `assets/img/cheats/nfa-rust.webp` | nfa-rust |
-| `assets/img/cheats/nfa-eft.webp` | nfa-eft |
-| `assets/img/cheats/genshin-core.webp` | genshin-core |
-| `assets/img/cheats/genshin-pro.webp` | genshin-pro |
-| `assets/img/cheats/gta-core.webp` | gta-core |
-| `assets/img/cheats/gta-pro.webp` | gta-pro |
-| `assets/img/cheats/wt-core.webp` | wt-core |
-| `assets/img/cheats/wt-pro.webp` | wt-pro |
+Для **каждого** slug из таблицы `cheats` (игры, OS, NFA) — **три файла**:
 
----
+| Файл | Назначение |
+|------|------------|
+| `{slug}-001.webp` | Обложка в каталоге (`image_path`), первый кадр слайдера |
+| `{slug}-002.webp` | Слайдер `cheat.php` |
+| `{slug}-003.webp` | Слайдер `cheat.php` |
 
-## Альбомы покупки (3× PNG на каждый `cheats.slug`)
-
-Для **каждого** slug из таблицы `cheats` (игры, OS, NFA):
-
-`assets/img/cheats/albums/{slug}-01.png`  
-`assets/img/cheats/albums/{slug}-02.png`  
-`assets/img/cheats/albums/{slug}-03.png`
+Рекомендуемый размер: **1920×1080**, соотношение **16:9**, формат **WebP**.
 
 ### Rust (`game_id = 1`)
 
@@ -175,6 +157,8 @@ nfa-cs2, nfa-fortnite, nfa-rust, nfa-eft
 | `arrow-left.svg` | Навигация / хлебные крошки |
 | `arrow-right.svg` | Карточки, ссылки |
 | `more-horizontal.svg` | Меню «⋯» практик |
+| `account-icon.svg` | Иконка аккаунта в шапке и превью профиля |
+| `telegram-logo.svg` | Иконка Telegram в шапке |
 
 ---
 

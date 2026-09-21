@@ -6,6 +6,7 @@ require __DIR__ . '/bootstrap.php';
 require __DIR__ . '/connect.php';
 
 $pageTitle = __('chronicle.title');
+$bodyClass = 'assets-heavy-page';
 require COMPONENTS_PATH . '/header.php';
 
 $isEn = current_lang() === 'en';

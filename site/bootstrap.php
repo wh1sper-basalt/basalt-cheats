@@ -127,7 +127,6 @@ function base_url_prefix(): string
         return $p;
     }
 
-    // Auto-detect project subfolder when app is not deployed at web root.
     $docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? (string) $_SERVER['DOCUMENT_ROOT'] : '';
     $rootPath = str_replace('\\', '/', ROOT_PATH);
     $docRootNorm = rtrim(str_replace('\\', '/', $docRoot), '/');
@@ -289,7 +288,6 @@ function maybe_restore_user_from_remember(mysqli $mysqli): void
         'avatar_path' => $row['avatar_path'] ?? null,
     ]);
 
-    // Rotate token to reduce replay window.
     $newToken = bin2hex(random_bytes(32));
     $newHash = hash('sha256', $newToken);
     $upd = $mysqli->prepare('UPDATE user_auth_tokens SET token_hash = ?, last_used_at = NOW() WHERE token_hash = ? LIMIT 1');
@@ -336,6 +334,55 @@ function flash_get(string $key): ?string
     return null;
 }
 
+function flash_peek(string $key): ?string
+{
+    $val = $_SESSION['flash'][$key] ?? null;
+
+    return is_string($val) ? $val : null;
+}
+
+/**
+ * @return array{type: string, title: string, message: string}|null
+ */
+function flash_consume_toast(): ?array
+{
+    $okKeys = [
+        'account_ok',
+        'dash_ok',
+        'auth_ok',
+        'admin_ok',
+    ];
+    $errKeys = [
+        'account_err',
+        'dash_err',
+        'auth_error',
+        'auth_register_error',
+        'admin_err',
+    ];
+    foreach ($okKeys as $key) {
+        $msg = flash_get($key);
+        if ($msg !== null) {
+            return [
+                'type' => 'ok',
+                'title' => __('toast.title_ok'),
+                'message' => $msg,
+            ];
+        }
+    }
+    foreach ($errKeys as $key) {
+        $msg = flash_get($key);
+        if ($msg !== null) {
+            return [
+                'type' => 'error',
+                'title' => __('toast.title_error'),
+                'message' => $msg,
+            ];
+        }
+    }
+
+    return null;
+}
+
 function has_admin_access(): bool
 {
     if (!isset($_SESSION['admin_access']) || $_SESSION['admin_access'] !== 1) {
@@ -353,18 +400,10 @@ function set_admin_access(bool $value): void
 {
     if ($value) {
         $_SESSION['admin_access'] = 1;
-        // Keep access short-lived so ADMIN button disappears after refresh/session drift.
         $_SESSION['admin_access_exp'] = time() + 300;
         return;
     }
     unset($_SESSION['admin_access'], $_SESSION['admin_access_exp']);
-}
-
-function consume_admin_access_once(): void
-{
-    if (has_admin_access()) {
-        set_admin_access(false);
-    }
 }
 
 function is_mobile_client(): bool
@@ -424,6 +463,36 @@ function mobile_guard_redirect(): void
 
     header('Location: ' . asset('mobile-blocked.php'), true, 302);
     exit;
+}
+
+function cheat_cover_path(string $slug): string
+{
+    $slug = trim($slug);
+    return 'assets/img/cheats/albums/' . $slug . '-001.webp';
+}
+
+/**
+ * @return list<string>
+ */
+function cheat_album_paths(string $slug): array
+{
+    $slug = trim($slug);
+    return [
+        'assets/img/cheats/albums/' . $slug . '-001.webp',
+        'assets/img/cheats/albums/' . $slug . '-002.webp',
+        'assets/img/cheats/albums/' . $slug . '-003.webp',
+    ];
+}
+
+function license_status_label(string $status): string
+{
+    $key = 'license.status.' . $status;
+    $label = __($key);
+    if ($label !== $key) {
+        return $label;
+    }
+
+    return $status;
 }
 
 mobile_guard_redirect();

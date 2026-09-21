@@ -55,7 +55,7 @@ if ($dbName !== '') {
 }
 $table = (string) ($_GET['table'] ?? '');
 if ($table === '' || !in_array($table, $tables, true)) {
-    $table = in_array('practice10_feedback', $tables, true) ? 'practice10_feedback' : ($tables[0] ?? '');
+    $table = $tables[0] ?? '';
 }
 
 $search = trim((string) ($_GET['q'] ?? ''));
@@ -91,44 +91,15 @@ if ($rowsRes) {
 }
 $columns = $rows ? array_keys($rows[0]) : $columns;
 
-$practiceStats = null;
-if ($dbName !== '' && in_array('practice10_feedback', $tables, true)) {
-    $statRes = $mysqli->query(
-        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT user_id) AS users_count, MAX(created_at) AS last_at
-         FROM `{$dbName}`.`practice10_feedback`"
-    );
-    if ($statRes) {
-        $practiceStats = $statRes->fetch_assoc() ?: null;
-    }
-}
-
 $isEn = current_lang() === 'en';
 $pageTitle = __('admin.title');
 require COMPONENTS_PATH . '/header.php';
-$okMsg = flash_get('admin_ok');
-$errMsg = flash_get('admin_err');
 ?>
 <div class="container admin-page">
     <header class="ws-page-hero">
         <p class="ws-hero-badge"><?= h(__('nav.admin')) ?></p>
         <h1 class="ws-page-title"><?= h(__('admin.panel_heading')) ?></h1>
     </header>
-    <?php if ($okMsg !== null) { ?><p class="form-alert is-ok"><?= h($okMsg) ?></p><?php } ?>
-    <?php if ($errMsg !== null) { ?><p class="form-alert is-error"><?= h($errMsg) ?></p><?php } ?>
-    <?php if ($practiceStats !== null) { ?>
-        <section class="card card-hover stack">
-            <h3>Practice #10 / DB</h3>
-            <p class="muted">
-                <?= h($isEn ? 'Rows:' : 'Записей:') ?> <strong><?= (int) ($practiceStats['total_rows'] ?? 0) ?></strong>,
-                <?= h($isEn ? 'Users:' : 'Пользователей:') ?> <strong><?= (int) ($practiceStats['users_count'] ?? 0) ?></strong>,
-                <?= h($isEn ? 'Last:' : 'Последняя:') ?> <strong><?= h((string) ($practiceStats['last_at'] ?? '-')) ?></strong>
-            </p>
-            <p>
-                <a class="btn btn-ghost" href="<?= h(asset('practice10.php')) ?>">Practice #10 page</a>
-                <a class="btn btn-ghost" href="<?= h(url_to('admin.php', ['db' => $dbName, 'table' => 'practice10_feedback'])) ?>">Open table</a>
-            </p>
-        </section>
-    <?php } ?>
     <section class="card card-hover stack">
         <form method="get" class="admin-filter">
             <label>
@@ -175,7 +146,7 @@ $errMsg = flash_get('admin_err');
     <section class="admin-ops-grid">
         <article class="card card-hover">
             <h3><?= $isEn ? 'Full reimport' : 'Полный импорт' ?></h3>
-            <p class="muted"><?= $isEn ? 'Reset all project databases via site/database/FULL.sql in phpMyAdmin or mysql CLI.' : 'Сброс всех БД проекта: site/database/FULL.sql в phpMyAdmin или через mysql CLI.' ?></p>
+            <p class="muted"><?= $isEn ? 'Reset the store database via site/database/FULL.sql in phpMyAdmin or mysql CLI.' : 'Сброс БД магазина: site/database/FULL.sql в phpMyAdmin или через mysql CLI.' ?></p>
         </article>
         <article class="card card-hover">
             <h3>CREATE / UPDATE</h3>

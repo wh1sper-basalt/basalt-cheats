@@ -7,6 +7,7 @@ require __DIR__ . '/connect.php';
 
 $pageTitle = __('nav.home');
 $mainClass = 'site-main index';
+$bodyClass = 'assets-heavy-page';
 require COMPONENTS_PATH . '/header.php';
 
 $isEn = current_lang() === 'en';

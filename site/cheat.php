@@ -44,10 +44,11 @@ while ($row = $mediaRes->fetch_assoc()) {
 }
 $mStmt->close();
 if (count($mediaRows) < 3) {
+    $albumPaths = cheat_album_paths($cheatSlug);
     while (count($mediaRows) < 3) {
-        $n = count($mediaRows) + 1;
+        $n = count($mediaRows);
         $mediaRows[] = [
-            'image_path' => 'assets/img/cheats/albums/' . $cheatSlug . '-' . sprintf('%02d', $n) . '.png',
+            'image_path' => $albumPaths[$n] ?? cheat_cover_path($cheatSlug),
             'caption_ru' => '',
             'caption_en' => '',
         ];
@@ -109,6 +110,7 @@ foreach ($reqRows as $r) {
 
 $isEn = current_lang() === 'en';
 $pageTitle = $isEn ? $cheat['title_en'] : $cheat['title_ru'];
+$bodyClass = 'assets-heavy-page';
 require COMPONENTS_PATH . '/header.php';
 
 $gTitle = $isEn ? $cheat['scope_title_en'] : $cheat['scope_title_ru'];

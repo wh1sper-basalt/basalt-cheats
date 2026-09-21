@@ -545,6 +545,16 @@ details[open] .ws-acc-body {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
 }
 
+.ws-game-card.ws-hiding,
+.hero-quad-card.ws-hiding {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 160ms var(--ease-soft),
+    transform 160ms var(--ease-soft);
+  pointer-events: none;
+}
+
 .ws-hidden {
   display: none !important;
 }

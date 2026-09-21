@@ -66,7 +66,14 @@ $gamesFoot = [
 <button type="button" class="back-to-top" id="back-to-top" hidden aria-label="<?= h($isRu ? 'Наверх' : 'Back to top') ?>">
     <img src="<?= h(asset('assets/svg/arrow-up.svg')) ?>" width="18" height="18" alt="">
 </button>
+<?php
+$siteFlashToast = flash_consume_toast();
+if ($siteFlashToast !== null) {
+    echo '<script type="application/json" id="site-flash-payload">' . json_encode($siteFlashToast, JSON_UNESCAPED_UNICODE) . '</script>';
+}
+?>
 <script src="<?= h(asset('assets/js/devtools-guard.js')) ?>" defer></script>
+<script src="<?= h(asset('assets/js/assets-loader.js')) ?>" defer></script>
 <script src="<?= h(asset('assets/js/network-bg.js')) ?>" defer></script>
 <script src="<?= h(asset('assets/js/main.js')) ?>" defer></script>
 </body>

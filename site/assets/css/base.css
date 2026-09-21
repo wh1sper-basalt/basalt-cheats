@@ -49,7 +49,7 @@ body.cursor-enhanced .map-frame {
     transform 220ms ease,
     border-color 220ms ease,
     box-shadow 220ms ease;
-  z-index: 130;
+  z-index: 180;
   will-change: transform, opacity, left, top;
 }
 

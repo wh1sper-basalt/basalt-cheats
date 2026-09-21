@@ -287,6 +287,16 @@
   display: none !important;
 }
 
+.custom-select-menu.is-closing {
+  display: grid !important;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    opacity 180ms var(--ease-soft),
+    transform 180ms var(--ease-soft);
+}
+
 .custom-select-option {
   width: 100%;
   border: 1px solid transparent;
@@ -357,6 +367,14 @@
   margin-top: 22px;
 }
 
+.map-frame-faq {
+  margin-bottom: 22px;
+}
+
 .map-frame-faq iframe {
   min-height: 280px;
+}
+
+.faq-map-block .ws-acc-body-inner {
+  padding-bottom: 28px;
 }

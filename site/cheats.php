@@ -43,6 +43,7 @@ if ($gameSlug !== '') {
 
 $isEn = current_lang() === 'en';
 $pageTitle = $isEn ? $scope['title_en'] : $scope['title_ru'];
+$bodyClass = 'assets-heavy-page';
 require COMPONENTS_PATH . '/header.php';
 $isNfaFlow = $scopeType === 'os' && $scopeSlug === 'nfa-accounts';
 

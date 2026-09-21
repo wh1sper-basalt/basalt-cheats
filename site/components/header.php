@@ -13,13 +13,14 @@ $user = current_user();
 $isLoggedIn = $user !== null;
 $logoPath = $c['logo_path'] ?? 'assets/img/components/logo.png';
 $faviconPath = $c['favicon_path'] ?? 'assets/img/components/icon.ico';
-$authError = flash_get('auth_error');
-$authOk = flash_get('auth_ok');
-$authRegisterError = flash_get('auth_register_error');
-$authPanel = flash_get('auth_panel') ?? ($authRegisterError !== null ? 'register' : 'login');
+$authError = flash_peek('auth_error');
+$authOk = flash_peek('auth_ok');
+$authRegisterError = flash_peek('auth_register_error');
+$authPanel = flash_peek('auth_panel') ?? ($authRegisterError !== null ? 'register' : 'login');
 if (!in_array($authPanel, ['login', 'register'], true)) {
     $authPanel = 'login';
 }
+$bodyClass = trim((string) ($bodyClass ?? ''));
 ?>
 <!DOCTYPE html>
 <html lang="<?= h(current_lang()) ?>">
@@ -38,7 +39,19 @@ if (!in_array($authPanel, ['login', 'register'], true)) {
     <link rel="stylesheet" href="<?= h($cssBase) ?>/forms.css">
     <link rel="stylesheet" href="<?= h($cssBase) ?>/pages.css">
 </head>
-<body>
+<body<?= $bodyClass !== '' ? ' class="' . h($bodyClass) . '"' : '' ?>>
+<div id="site-toast-stack" class="site-toast-stack" aria-live="polite" aria-atomic="true"
+     data-toast-title-ok="<?= h(__('toast.title_ok')) ?>"
+     data-toast-title-error="<?= h(__('toast.title_error')) ?>"></div>
+<div id="assets-loading-overlay" class="assets-loading-overlay" hidden aria-live="polite">
+    <div class="assets-loading-panel glass-dock">
+        <div class="assets-loader-dots" aria-hidden="true">
+            <?php for ($i = 0; $i < 16; $i++) { ?><span class="assets-loader-dot"></span><?php } ?>
+        </div>
+        <p class="assets-loading-title"><?= h(__('assets_loading.title')) ?></p>
+        <p class="assets-loading-lead muted"><?= h(__('assets_loading.lead')) ?></p>
+    </div>
+</div>
 <div id="scroll-progress" aria-hidden="true"></div>
 <div class="custom-cursor-dot" aria-hidden="true"></div>
 <div class="custom-cursor-ring" aria-hidden="true"></div>
@@ -78,18 +91,18 @@ if (!in_array($authPanel, ['login', 'register'], true)) {
                 </div>
                 <a class="nav-tg" href="<?= h($tg) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= h(__('nav.telegram')) ?>">
                     <span class="ws-sr-only"><?= h(__('nav.telegram')) ?></span>
-                    <img class="nav-tg-ico" src="<?= h(asset('assets/img/components/telegram-logo.svg')) ?>" alt="" width="18" height="18">
+                    <img class="nav-tg-ico" src="<?= h(asset('assets/svg/telegram-logo.svg')) ?>" alt="" width="18" height="18">
                 </a>
                 <?php if ($isLoggedIn) {
                     $navAvatar = trim((string) ($user['avatar_path'] ?? ''));
-                    $navAvatarSrc = $navAvatar !== '' ? asset($navAvatar) : asset('assets/img/components/account-icon.svg');
+                    $navAvatarSrc = $navAvatar !== '' ? asset($navAvatar) : asset('assets/svg/account-icon.svg');
                     ?>
                     <a class="nav-account<?= $navAvatar !== '' ? ' has-avatar' : '' ?>" href="<?= h(asset('user-info.php')) ?>" title="<?= h(__('auth.account')) ?>">
                         <img src="<?= h($navAvatarSrc) ?>" width="18" height="18" alt="">
                     </a>
                 <?php } else { ?>
                     <button type="button" class="nav-account" id="account-launcher" aria-expanded="false" aria-controls="account-modal" title="<?= h(__('auth.account')) ?>">
-                        <img src="<?= h(asset('assets/img/components/account-icon.svg')) ?>" width="18" height="18" alt="">
+                        <img src="<?= h(asset('assets/svg/account-icon.svg')) ?>" width="18" height="18" alt="">
                     </button>
                 <?php } ?>
                 <button type="button" class="nav-more" id="nav-more" aria-expanded="false" aria-controls="nav-secondary" title="<?= h(__('nav.more')) ?>">
@@ -106,18 +119,6 @@ if (!in_array($authPanel, ['login', 'register'], true)) {
                             <a href="<?= h(asset('regions.php')) ?>"><?= h(__('nav.regions')) ?></a>
                             <a href="<?= h(asset('operations.php')) ?>"><?= h(__('nav.operations')) ?></a>
                             <a href="<?= h(asset('history.php')) ?>"><?= h(__('nav.history')) ?></a>
-                            <a href="<?= h(asset('index-db-blocks.php')) ?>"><?= h(__('nav.indexdb')) ?></a>
-                            <a href="<?= h(asset('iframe-target-lab.php')) ?>"><?= h(__('nav.iframe_lab')) ?></a>
-                            <a href="<?= h(asset('practice10.php')) ?>"><?= h(__('nav.practice10')) ?></a>
-                            <a href="<?= h(asset('practice10-sweetty-79.php')) ?>"><?= h(__('nav.practice10_79')) ?></a>
-                            <a href="<?= h(asset('practice10-sweetty-710.php')) ?>"><?= h(__('nav.practice10_710')) ?></a>
-                            <a href="<?= h(asset('practice11.php')) ?>"><?= h(__('nav.practice11')) ?></a>
-                            <a href="<?= h(asset('practice11-cities.php')) ?>"><?= h(__('nav.practice11_cities')) ?></a>
-                            <a href="<?= h(asset('practice12-async.php')) ?>"><?= h(__('nav.practice12')) ?></a>
-                            <a href="<?= h(asset('practice13.php')) ?>"><?= h(__('nav.practice13')) ?></a>
-                            <a href="<?= h(asset('validation-lab.php')) ?>"><?= h(__('nav.validation')) ?></a>
-                            <a href="<?= h(asset('runtime-demo.php')) ?>"><?= h(__('nav.runtime')) ?></a>
-                            <a href="<?= h(asset('support-console.php')) ?>"><?= h(__('nav.console')) ?></a>
                         </div>
                     </nav>
                 </div>
@@ -126,7 +127,7 @@ if (!in_array($authPanel, ['login', 'register'], true)) {
     </div>
 </header>
 <?php if (!$isLoggedIn) { ?>
-<div class="account-modal" id="account-modal" hidden data-initial-panel="<?= h($authPanel) ?>">
+<div class="account-modal" id="account-modal" hidden data-initial-panel="<?= h($authPanel) ?>"<?= ($authError !== null || $authRegisterError !== null) ? ' data-open-on-load="1"' : '' ?>>
     <div class="account-modal-backdrop" data-account-close></div>
     <div class="account-modal-dialog card">
         <button type="button" class="account-modal-close" data-account-close aria-label="<?= h(__('common.close')) ?>">
@@ -144,12 +145,6 @@ if (!in_array($authPanel, ['login', 'register'], true)) {
         </div>
         <section class="account-panel<?= $authPanel === 'login' ? ' is-active' : '' ?>" id="account-panel-login" role="tabpanel">
             <p class="account-modal-lead muted"><?= h(__('auth.modal_lead_login')) ?></p>
-            <?php if ($authError !== null) { ?>
-                <p class="form-alert is-error"><?= h($authError) ?></p>
-            <?php } ?>
-            <?php if ($authOk !== null) { ?>
-                <p class="form-alert is-ok"><?= h($authOk) ?></p>
-            <?php } ?>
             <form method="post" action="<?= h(asset('actions/auth-login.php')) ?>" class="form-grid account-auth-form">
                 <input type="hidden" name="back" value="<?= h($_SERVER['REQUEST_URI'] ?? asset('index.php')) ?>">
                 <label class="full">
@@ -175,9 +170,6 @@ if (!in_array($authPanel, ['login', 'register'], true)) {
         </section>
         <section class="account-panel<?= $authPanel === 'register' ? ' is-active' : '' ?>" id="account-panel-register" role="tabpanel">
             <p class="account-modal-lead muted"><?= h(__('auth.modal_lead_register')) ?></p>
-            <?php if ($authRegisterError !== null) { ?>
-                <p class="form-alert is-error"><?= h($authRegisterError) ?></p>
-            <?php } ?>
             <form method="post" action="<?= h(asset('actions/auth-register.php')) ?>" class="form-grid account-auth-form">
                 <input type="hidden" name="back" value="<?= h($_SERVER['REQUEST_URI'] ?? asset('index.php')) ?>">
                 <label class="full">

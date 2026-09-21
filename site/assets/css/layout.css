@@ -66,9 +66,28 @@
   overflow: hidden;
 }
 
+.nav-dock.glass-dock:not(.is-expanded):not(.is-collapsing) {
+  overflow: hidden;
+}
+
 .nav-dock.glass-dock.is-expanded,
 .nav-dock.glass-dock.is-collapsing {
   overflow: visible;
+}
+
+.nav-dock:not(.is-expanded):not(.is-collapsing) .nav-expand-panel {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-dock:not(.is-expanded):not(.is-collapsing) .nav-expand-panel-inner {
+  border-radius: 0;
+  border: none;
+  opacity: 0;
+  box-shadow: none;
 }
 
 .nav-dock-main {
@@ -404,7 +423,7 @@
 }
 
 .nav-account img {
-  filter: invert(100%);
+  filter: invert(0%);
 }
 
 .nav-account.has-avatar img {
@@ -649,6 +668,14 @@
     transform var(--dur) var(--ease-out),
     border-color var(--dur) var(--ease-out),
     box-shadow var(--dur) var(--ease-out);
+}
+
+.back-to-top.is-leaving {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 200ms var(--ease-soft),
+    transform 200ms var(--ease-soft);
 }
 
 .back-to-top[hidden] {

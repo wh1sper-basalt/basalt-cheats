@@ -69,6 +69,9 @@ if ($isNfaFlow) {
         ? ($isEn ? 'Forever' : 'Навсегда')
         : ((int) $ord['duration_days'] . ' ' . ($isEn ? 'days' : 'дн.'));
 }
+$termLine = $isNfaFlow
+    ? $pLabel . ' (' . $daysLabel . ')'
+    : (((int) $ord['duration_days'] === 0) ? $pLabel : $pLabel . ' (' . $daysLabel . ')');
 
 $newQrUrl = url_to('checkout.php', array_merge(
     [$scopeType => $scopeSlug, 'cheat' => $cheatSlug, 'plan' => (string) $planId, 'newqr' => '1']
@@ -91,11 +94,11 @@ $breadcrumbs = [
     </header>
 
     <div class="order-summary card card-hover">
-        <h2 class="summary-heading"><?= $isEn ? 'Your selection' : 'Ваш выбор' ?></h2>
+        <h2 class="summary-heading"><?= h(__('checkout.selection_heading')) ?></h2>
         <ul class="summary-list">
             <li><span class="muted"><?= $scopeType === 'game' ? ($isEn ? 'Game' : 'Игра') : ($isEn ? 'Utility' : 'Утилита') ?></span> <?= h($gTitle) ?></li>
             <li><span class="muted"><?= $isEn ? ($isNfaFlow ? 'Game' : 'Cheat') : ($isNfaFlow ? 'Игра' : 'Чит') ?></span> <?= h($cTitle) ?></li>
-            <li><span class="muted"><?= h($isNfaFlow ? ($isEn ? 'Account quantity' : 'Количество аккаунтов') : __('checkout.subscription_term')) ?></span> <?= h($pLabel) ?> (<?= h($daysLabel) ?>)</li>
+            <li><span class="muted"><?= h($isNfaFlow ? ($isEn ? 'Account quantity' : 'Количество аккаунтов') : __('checkout.subscription_term')) ?></span> <?= h($termLine) ?></li>
             <li><span class="muted"><?= $isEn ? 'Price' : 'Цена' ?></span> <strong><?= h(number_format($price, 0, '', ' ')) ?> <?= $isEn ? 'RUB' : '₽' ?></strong></li>
         </ul>
     </div>

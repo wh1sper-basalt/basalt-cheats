@@ -104,12 +104,28 @@
 
   const cards = () => Array.from(grid.querySelectorAll("[data-search]"));
 
+  const setCardVisible = (el, show) => {
+    if (show) {
+      el.classList.remove("ws-hidden", "ws-hiding");
+      return;
+    }
+    if (el.classList.contains("ws-hidden") || el.classList.contains("ws-hiding")) return;
+    el.classList.add("ws-hiding");
+    const onEnd = (ev) => {
+      if (ev.propertyName !== "opacity") return;
+      el.classList.remove("ws-hiding");
+      el.classList.add("ws-hidden");
+      el.removeEventListener("transitionend", onEnd);
+    };
+    el.addEventListener("transitionend", onEnd);
+  };
+
   const apply = () => {
     const q = input.value.trim().toLowerCase();
     cards().forEach((el) => {
       const hay = (el.getAttribute("data-search") || "").toLowerCase();
       const show = !q || hay.includes(q);
-      el.classList.toggle("ws-hidden", !show);
+      setCardVisible(el, show);
     });
   };
 
@@ -379,7 +395,7 @@
   const initialPanel = modal.getAttribute("data-initial-panel") || "login";
   setPanel(initialPanel);
 
-  if (modal.querySelector(".form-alert")) {
+  if (modal.hasAttribute("data-open-on-load")) {
     open();
   }
 })();
@@ -572,12 +588,28 @@
   const blocks = Array.from(document.querySelectorAll("[data-custom-select]"));
   if (!blocks.length) return;
 
+  const closeMenu = (menu, trigger) => {
+    if (!(menu instanceof HTMLElement) || menu.hasAttribute("hidden")) return;
+    menu.classList.add("is-closing");
+    const finish = () => {
+      menu.classList.remove("is-closing");
+      menu.setAttribute("hidden", "");
+      if (trigger instanceof HTMLElement) trigger.setAttribute("aria-expanded", "false");
+    };
+    const onEnd = (ev) => {
+      if (ev.target !== menu) return;
+      menu.removeEventListener("transitionend", onEnd);
+      finish();
+    };
+    menu.addEventListener("transitionend", onEnd);
+    window.setTimeout(finish, 200);
+  };
+
   const closeAll = () => {
     blocks.forEach((block) => {
       const trigger = block.querySelector("[data-custom-trigger]");
       const menu = block.querySelector("[data-custom-menu]");
-      if (menu) menu.setAttribute("hidden", "");
-      if (trigger) trigger.setAttribute("aria-expanded", "false");
+      closeMenu(menu, trigger);
     });
   };
 
@@ -607,6 +639,7 @@
       const hidden = menu.hasAttribute("hidden");
       closeAll();
       if (hidden) {
+        menu.classList.remove("is-closing");
         menu.removeAttribute("hidden");
         trigger.setAttribute("aria-expanded", "true");
       }
@@ -620,8 +653,7 @@
         label.textContent = text;
         options.forEach((o) => o.classList.remove("is-selected"));
         opt.classList.add("is-selected");
-        menu.setAttribute("hidden", "");
-        trigger.setAttribute("aria-expanded", "false");
+        closeMenu(menu, trigger);
       });
     });
 
@@ -691,12 +723,6 @@
       return;
     }
 
-    if (lastUrl) URL.revokeObjectURL(lastUrl);
-    lastUrl = URL.createObjectURL(file);
-    img.src = lastUrl;
-    if (preview instanceof HTMLElement) {
-      preview.classList.add("is-local-preview");
-    }
     setHint("updated");
   });
 })();
@@ -707,9 +733,29 @@
 
   const threshold = 80;
 
+  const hideBtn = () => {
+    if (btn.hasAttribute("hidden") || btn.classList.contains("is-leaving")) return;
+    btn.classList.add("is-leaving");
+    const done = () => {
+      btn.classList.remove("is-leaving");
+      btn.setAttribute("hidden", "");
+    };
+    const onEnd = (ev) => {
+      if (ev.propertyName !== "opacity") return;
+      btn.removeEventListener("transitionend", onEnd);
+      done();
+    };
+    btn.addEventListener("transitionend", onEnd);
+    window.setTimeout(done, 220);
+  };
+
   const sync = () => {
-    if (window.scrollY > threshold) btn.removeAttribute("hidden");
-    else btn.setAttribute("hidden", "");
+    if (window.scrollY > threshold) {
+      btn.classList.remove("is-leaving");
+      btn.removeAttribute("hidden");
+    } else {
+      hideBtn();
+    }
   };
 
   sync();
@@ -718,4 +764,459 @@
   btn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+})();
+
+(() => {
+  const stack = document.getElementById("site-toast-stack");
+  if (!stack) return;
+
+  const defaultTitle = (type) => {
+    const key = type === "error" ? "toastTitleError" : "toastTitleOk";
+    return stack.dataset[key] || (type === "error" ? "Error" : "Done");
+  };
+
+  window.showSiteToast = (payload, typeOrDuration = "ok", durationMs = 4000) => {
+    let type = "ok";
+    let title = "";
+    let message = "";
+    let duration = durationMs;
+
+    if (typeof payload === "string") {
+      message = payload;
+      type = typeof typeOrDuration === "string" ? typeOrDuration : "ok";
+      if (typeof typeOrDuration === "number") duration = typeOrDuration;
+    } else if (payload && typeof payload === "object") {
+      type = payload.type === "error" ? "error" : "ok";
+      title = payload.title || "";
+      message = payload.message || "";
+      if (typeof typeOrDuration === "number") duration = typeOrDuration;
+    }
+
+    if (!message) return;
+    if (!title) title = defaultTitle(type);
+
+    const el = document.createElement("div");
+    el.className = `site-toast is-${type}`;
+    const titleEl = document.createElement("p");
+    titleEl.className = "site-toast-title";
+    titleEl.textContent = title;
+    const leadEl = document.createElement("p");
+    leadEl.className = "site-toast-lead";
+    leadEl.textContent = message;
+    el.append(titleEl, leadEl);
+    stack.appendChild(el);
+    requestAnimationFrame(() => el.classList.add("is-visible"));
+    const hide = () => {
+      el.classList.remove("is-visible");
+      el.classList.add("is-leaving");
+      const remove = () => el.remove();
+      el.addEventListener("transitionend", remove, { once: true });
+      window.setTimeout(remove, 320);
+    };
+    window.setTimeout(hide, duration);
+  };
+
+  const flashEl = document.getElementById("site-flash-payload");
+  if (flashEl && flashEl.textContent) {
+    try {
+      const data = JSON.parse(flashEl.textContent);
+      if (data && data.message) {
+        showSiteToast({
+          type: data.type === "error" ? "error" : "ok",
+          title: data.title || "",
+          message: data.message,
+        });
+      }
+    } catch (_) {
+      /* ignore */
+    }
+  }
+})();
+
+(() => {
+  const licenses = document.getElementById("licenses");
+  if (!licenses) return;
+
+  licenses.querySelectorAll(".dash-actions form").forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      try {
+        const res = await fetch(form.getAttribute("action") || "", {
+          method: "POST",
+          body: fd,
+          headers: {
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          credentials: "same-origin",
+        });
+        const data = await res.json();
+        if (typeof window.showSiteToast === "function") {
+          window.showSiteToast({
+            type: data.ok ? "ok" : "error",
+            message: data.message || "",
+          });
+        }
+        if (!data.ok || !data.license) return;
+        const card = form.closest("[data-license-card]");
+        if (!(card instanceof HTMLElement)) return;
+        const statusEl = card.querySelector("[data-license-status-label]");
+        const expiresEl = card.querySelector("[data-license-expires]");
+        const reasonEl = card.querySelector("[data-license-reason]");
+        const freezeBtn = card.querySelector('form input[name="action"][value="freeze"]')
+          ?.closest("form")
+          ?.querySelector('button[type="submit"]');
+        if (statusEl) statusEl.textContent = data.license.status_label || data.license.status;
+        if (expiresEl) expiresEl.textContent = data.license.expires_display || "—";
+        if (reasonEl) {
+          const reason = data.license.auto_frozen_reason || "";
+          reasonEl.textContent = reason;
+          if (reason) reasonEl.removeAttribute("hidden");
+          else reasonEl.setAttribute("hidden", "");
+        }
+        if (freezeBtn instanceof HTMLButtonElement) {
+          freezeBtn.disabled = !!data.license.freeze_disabled;
+        }
+      } catch (_) {
+        form.submit();
+      }
+    });
+  });
+})();
+
+(() => {
+  const cropModal = document.getElementById("avatar-crop-modal");
+  const cropOpen = document.getElementById("avatar-crop-open");
+  const cropChange = document.getElementById("avatar-change-open");
+  const cropDone = document.getElementById("avatar-crop-done");
+  const cropViewport = document.getElementById("avatar-crop-viewport");
+  const cropSource = document.getElementById("avatar-crop-source");
+  const cropZoom = document.getElementById("avatar-crop-zoom");
+  const fileInput = document.getElementById("avatar-input");
+  const previewImg = document.getElementById("avatar-preview-img");
+  const previewWrap = document.getElementById("avatar-preview");
+  const uploadForm = document.getElementById("avatar-upload-form");
+  if (!(cropModal instanceof HTMLElement) || !(cropSource instanceof HTMLImageElement) || !(cropViewport instanceof HTMLElement)) {
+    return;
+  }
+
+  let pendingAvatarBlob = null;
+  let objectUrl = "";
+  let scale = 1;
+  const ZOOM_MIN = 1;
+  const ZOOM_MAX = 3;
+  const WHEEL_ZOOM_STEP = 0.07;
+  let offsetX = 0;
+  let offsetY = 0;
+  let dragging = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let startOffsetX = 0;
+  let startOffsetY = 0;
+
+  const setModalOpen = (on) => {
+    document.body.classList.toggle("is-modal-open", on);
+  };
+
+  const getFrameMetrics = () => {
+    const vw = cropViewport.clientWidth;
+    const vh = cropViewport.clientHeight;
+    const fw = Math.min(vw, vh) * 0.72;
+    const fh = fw;
+    return {
+      vw,
+      vh,
+      fw,
+      fh,
+      frameLeft: (vw - fw) / 2,
+      frameTop: (vh - fh) / 2,
+    };
+  };
+
+  /** scale 1 = image fits in crop frame; higher = zoom in (× scale on contain) */
+  const getContainScale = () => {
+    const { fw, fh } = getFrameMetrics();
+    const iw = cropSource.naturalWidth;
+    const ih = cropSource.naturalHeight;
+    if (!iw || !ih || !fw || !fh) return 1;
+    return Math.min(fw / iw, fh / ih);
+  };
+
+  const getImageBaseScale = () => getContainScale() * scale;
+
+  const resetCropView = () => {
+    scale = ZOOM_MIN;
+    offsetX = 0;
+    offsetY = 0;
+    if (cropZoom instanceof HTMLInputElement) {
+      cropZoom.min = String(ZOOM_MIN);
+      cropZoom.max = String(ZOOM_MAX);
+      cropZoom.value = String(scale);
+    }
+  };
+
+  const layoutCropImage = () => {
+    const { vw, vh } = getFrameMetrics();
+    const iw = cropSource.naturalWidth;
+    const ih = cropSource.naturalHeight;
+    if (!iw || !ih || !vw || !vh) return;
+    const base = getImageBaseScale();
+    const dw = iw * base;
+    const dh = ih * base;
+    cropSource.style.width = `${dw}px`;
+    cropSource.style.height = `${dh}px`;
+    cropSource.style.left = `${(vw - dw) / 2 + offsetX}px`;
+    cropSource.style.top = `${(vh - dh) / 2 + offsetY}px`;
+  };
+
+  const scheduleCropLayout = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        layoutCropImage();
+      });
+    });
+  };
+
+  const loadFileToCrop = (file) =>
+    new Promise((resolve) => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = URL.createObjectURL(file);
+      cropSource.onload = () => {
+        resetCropView();
+        scheduleCropLayout();
+        resolve(true);
+      };
+      cropSource.onerror = () => resolve(false);
+      cropSource.src = objectUrl;
+    });
+
+  const openCropFromFile = async (file) => {
+    const ok = await loadFileToCrop(file);
+    if (!ok) return;
+    cropModal.removeAttribute("hidden");
+    setModalOpen(true);
+    scheduleCropLayout();
+  };
+
+  const openCropFromCurrent = async () => {
+    if (fileInput instanceof HTMLInputElement && fileInput.files?.[0]) {
+      await openCropFromFile(fileInput.files[0]);
+      return;
+    }
+    if (!(previewImg instanceof HTMLImageElement) || !previewImg.src) return;
+    cropSource.crossOrigin = "anonymous";
+    cropSource.onload = () => {
+      resetCropView();
+      cropModal.removeAttribute("hidden");
+      setModalOpen(true);
+      scheduleCropLayout();
+    };
+    cropSource.src = previewImg.src;
+  };
+
+  const closeCrop = () => {
+    cropModal.setAttribute("hidden", "");
+    setModalOpen(false);
+  };
+
+  const exportCropBlob = () =>
+    new Promise((resolve) => {
+      const { vw, vh, fw, fh, frameLeft, frameTop } = getFrameMetrics();
+      const iw = cropSource.naturalWidth;
+      const ih = cropSource.naturalHeight;
+      const base = getImageBaseScale();
+      const dw = iw * base;
+      const dh = ih * base;
+      const imgLeft = (vw - dw) / 2 + offsetX;
+      const imgTop = (vh - dh) / 2 + offsetY;
+      const sx = Math.max(0, (frameLeft - imgLeft) / base);
+      const sy = Math.max(0, (frameTop - imgTop) / base);
+      const sw = Math.min(iw - sx, fw / base);
+      const sh = Math.min(ih - sy, fh / base);
+      const out = 256;
+      const canvas = document.createElement("canvas");
+      canvas.width = out;
+      canvas.height = out;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        resolve(null);
+        return;
+      }
+      ctx.drawImage(cropSource, sx, sy, sw, sh, 0, 0, out, out);
+      canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.92);
+    });
+
+  cropOpen?.addEventListener("click", () => openCropFromCurrent());
+  cropChange?.addEventListener("click", () => fileInput?.click());
+  cropModal.querySelectorAll("[data-crop-close]").forEach((el) => {
+    el.addEventListener("click", closeCrop);
+  });
+
+  const syncZoomSlider = () => {
+    if (cropZoom instanceof HTMLInputElement) {
+      cropZoom.value = String(Math.round(scale * 100) / 100);
+    }
+  };
+
+  const setCropScale = (nextScale) => {
+    const clamped = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, nextScale));
+    const { vw, vh } = getFrameMetrics();
+    const iw = cropSource.naturalWidth;
+    const ih = cropSource.naturalHeight;
+    if (!iw || !ih || !vw || !vh) {
+      scale = clamped;
+      syncZoomSlider();
+      layoutCropImage();
+      return;
+    }
+
+    const contain = getContainScale();
+    const oldBase = contain * scale;
+    const newBase = contain * clamped;
+    const oldDw = iw * oldBase;
+    const oldDh = ih * oldBase;
+    const oldLeft = (vw - oldDw) / 2 + offsetX;
+    const oldTop = (vh - oldDh) / 2 + offsetY;
+    const centerX = oldLeft + oldDw / 2;
+    const centerY = oldTop + oldDh / 2;
+
+    scale = clamped;
+
+    const newDw = iw * newBase;
+    const newDh = ih * newBase;
+    offsetX = centerX - newDw / 2 - (vw - newDw) / 2;
+    offsetY = centerY - newDh / 2 - (vh - newDh) / 2;
+
+    syncZoomSlider();
+    layoutCropImage();
+  };
+
+  const applyZoomFromSlider = () => {
+    if (!(cropZoom instanceof HTMLInputElement)) return;
+    const raw = parseFloat(cropZoom.value);
+    setCropScale(Number.isFinite(raw) ? raw : ZOOM_MIN);
+  };
+
+  if (cropZoom instanceof HTMLInputElement) {
+    cropZoom.min = String(ZOOM_MIN);
+    cropZoom.max = String(ZOOM_MAX);
+    cropZoom.step = "0.05";
+    cropZoom.addEventListener("input", applyZoomFromSlider);
+    cropZoom.addEventListener("change", applyZoomFromSlider);
+  }
+
+  const cropStage = document.getElementById("avatar-crop-stage");
+  const onCropWheel = (e) => {
+    if (cropModal.hasAttribute("hidden")) return;
+    e.preventDefault();
+    let step = WHEEL_ZOOM_STEP;
+    if (e.deltaMode === 1) step *= 0.35;
+    else if (e.deltaMode === 2) step *= 3;
+    const dir = e.deltaY < 0 ? 1 : -1;
+    setCropScale(scale + dir * step);
+  };
+
+  (cropStage || cropViewport).addEventListener("wheel", onCropWheel, { passive: false });
+
+  cropViewport.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    if (!cropSource.naturalWidth) return;
+    dragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    startOffsetX = offsetX;
+    startOffsetY = offsetY;
+  });
+  window.addEventListener("mousemove", (e) => {
+    if (!dragging) return;
+    offsetX = startOffsetX + (e.clientX - dragStartX);
+    offsetY = startOffsetY + (e.clientY - dragStartY);
+    layoutCropImage();
+  });
+  window.addEventListener("mouseup", () => {
+    dragging = false;
+  });
+
+  cropDone?.addEventListener("click", async () => {
+    const blob = await exportCropBlob();
+    if (!blob) return;
+    pendingAvatarBlob = blob;
+    if (fileInput instanceof HTMLInputElement) {
+      const file = new File([blob], "avatar-crop.jpg", { type: "image/jpeg" });
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
+    }
+    if (previewImg instanceof HTMLImageElement) {
+      previewImg.src = URL.createObjectURL(blob);
+    }
+    if (previewWrap instanceof HTMLElement) {
+      previewWrap.classList.add("is-local-preview");
+    }
+    closeCrop();
+  });
+
+  if (fileInput instanceof HTMLInputElement) {
+    fileInput.addEventListener("change", async () => {
+      const file = fileInput.files?.[0];
+      if (!file) return;
+      const maxBytes = 3 * 1024 * 1024;
+      if (file.size > maxBytes || !file.type.startsWith("image/")) {
+        fileInput.value = "";
+        return;
+      }
+      await openCropFromFile(file);
+    });
+  }
+
+  if (uploadForm instanceof HTMLFormElement) {
+    uploadForm.addEventListener("submit", (e) => {
+      if (pendingAvatarBlob && fileInput instanceof HTMLInputElement) {
+        const file = new File([pendingAvatarBlob], "avatar-crop.jpg", { type: "image/jpeg" });
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+      }
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    if (!cropModal.hasAttribute("hidden")) layoutCropImage();
+  });
+
+  if (typeof ResizeObserver !== "undefined") {
+    let resizeRaf = 0;
+    const ro = new ResizeObserver(() => {
+      if (cropModal.hasAttribute("hidden")) return;
+      window.cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => layoutCropImage());
+    });
+    ro.observe(cropViewport);
+  }
+})();
+
+(() => {
+  const bindModal = (modalId, openId, closeAttr) => {
+    const modal = document.getElementById(modalId);
+    const openBtn = openId ? document.getElementById(openId) : null;
+    if (!(modal instanceof HTMLElement)) return;
+    const open = () => {
+      modal.removeAttribute("hidden");
+      document.body.classList.add("is-modal-open");
+    };
+    const close = () => {
+      modal.setAttribute("hidden", "");
+      const anyOpen = document.querySelector(
+        ".avatar-crop-modal:not([hidden]), .account-delete-modal:not([hidden]), #avatar-remove-modal:not([hidden])"
+      );
+      if (!anyOpen) {
+        document.body.classList.remove("is-modal-open");
+      }
+    };
+    openBtn?.addEventListener("click", open);
+    modal.querySelectorAll(`[${closeAttr}]`).forEach((el) => el.addEventListener("click", close));
+  };
+  bindModal("account-delete-modal", "account-delete-open", "data-delete-close");
+  bindModal("avatar-remove-modal", "avatar-remove-open", "data-avatar-remove-close");
 })();

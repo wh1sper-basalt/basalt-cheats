@@ -1,0 +1,138 @@
+  <!-- Секция Наши преимущества -->
+  <section class="advantages">
+    <div class="content">
+      <div class="advantage">
+        <img src="assets/img/icons/icon_1.png" alt="Натуральные продукты">
+        <p> Только<br> натуральные продукты </p>
+      </div>
+      <div class="advantage">
+        <img src="assets/img/icons/icon_2.png" alt="Без консервантов">
+        <p> Без консервантов,<br> срок хранения 48 часов </p>
+      </div>
+      <div class="advantage">
+        <img src="assets/img/icons/icon_3.png" alt="Индивидуальный дизайн">
+        <p> Индивидуальный дизайн </p>
+      </div>
+      <div class="advantage">
+        <img src="assets/img/icons/icon_4.png" alt="Разные вкусы">
+        <p> Разнообразие<br> вкусов в одном торте </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция для выбора услуги -->
+  <section class="select">
+    <div class="content">
+      <h2>А ЧЕГО ЖЕЛАЕТЕ ВЫ?</h2>
+      <div class="select__cakes">
+        <div class="select__cake">
+          <img src="assets/img/select-cake-1.jpg" alt="Выбрать готовый торт">
+          <a onclick="openPage('cakes')">ВЫБРАТЬ ГОТОВЫЙ</a>
+        </div>
+        <div class="select__cake">
+          <img src="assets/img/select-cake-2.jpg" alt="Заказать свой торт">
+          <a onclick="openPage('main', true);">СОЗДАТЬ СВОЙ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция для блока О компании -->
+  <section class="about">
+    <div class="about__wrap">
+      <div class="about__text">
+        <p>
+          Меня зовут Екатерина - я профессиональный кондитер и хозяйка Моей
+          Сладости.
+        </p>
+        <p>Мой девиз - честная и открытая работа, индивидуальный подход.</p>
+        <p>
+          В моих тортиках только натуральные ингредиенты и качественные
+          продукты.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция для отзывов клиентов-->
+  <section class="reviews">
+    <div class="content">
+      <div class="review">
+        <img src="assets/img/reviews/review-1.jpg" alt="Фото отзыв">
+        <div class="review__text">
+          <blockquote>
+            Внимательное отношение к клиенту, вкуснющий торт и некусачие цены!
+            Огромное спасибо за удовольствие! Екатерине творческих успехов!
+          </blockquote>
+        </div>
+      </div>
+      <div class="review">
+        <img src="assets/img/reviews/review-2.jpg" alt="Фото отзыв">
+        <div class="review__text">
+          <blockquote>
+            Торт натуральный, выполнен искусно и подложка лишь подчеркнула
+            торжественное лакомство! Спасибо и успехов вашему бизнесу!
+          </blockquote>
+        </div>
+      </div>
+      <div class="review">
+        <img src="assets/img/reviews/review-3.jpg" alt="Фото отзыв">
+        <div class="review__text">
+          <blockquote>
+            Изысканный вкус тортиков не оставил равнодушным ни одного
+            сотрудника нашего Холдинга! Огромное спасибо за настроение,
+            сладкую жизнь и превосходный вкус и дизайн Ваших тортов!
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция для блока обратной связи с клиентом -->
+  <section class="feedback" id="feedback">
+    <div class="content">
+      <h2>ГОТОВ К ЗАКАЗУ ИЛИ НЕ МОЖЕШЬ ОПРЕДЕЛИТЬСЯ? ЗВОНИ!</h2>
+      <a href="tel:+72223332255">
+        <h3>+7 (222) 333-22-55</h3>
+      </a>
+      <h4>ИЛИ ОСТАВЬ НАМ СВОЙ НОМЕР И МЫ ПЕРЕЗВОНИМ САМИ</h4>
+
+
+      <form action="">
+        <div class="form__contact">
+          <input type="text" placeholder="НАПИШИТЕ СВОЕ ИМЯ" required pattern="[A-Za-zА-Яа-яЁё]{2,}">
+          <input type="tel" name="tel-number" id="tel-number" title=" например, 89041041706"
+            placeholder="НОМЕР ТЕЛЕФОНА" required pattern="[0-9]{11}">
+        </div>
+
+        <div class="form__download">
+          ЕСТЬ ФОТО ПРИМЕРА?
+          <label for="download">ЗАГРУЖАЙ ЗДЕСЬ</label>
+          <input type="file" id="download" name="download" accept=".png, .jpg, .jpeg">
+        </div>
+
+        <div class="form__submit">
+          <input type="checkbox" name="personal" id="personal">
+          <label for="personal">
+            Я СОГЛАСЕН НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ
+          </label>
+        </div>
+        <!-- Проблема, не проверяет данные -->
+        <input type="submit" value="ПООБЩАТЬСЯ" onclick="openPage('answer')">
+      </form>
+    </div>
+  </section>
+
+  <!-- Секция для блока с картой -->
+  <section class="map">
+    <div class="content">
+      <h2>МЫ НА КАРТЕ</h2>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1185.8234258591788!2d57.224571220779985!3d65.14509500553477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4477316d89272b07%3A0x40a2e859a9bf1d6c!2z0JHRgNC40YHRgtC-0LvRjA!5e0!3m2!1sru!2sru!4v1644919434959!5m2!1sru!2sru"
+         style="border: 0" allowfullscreen="" loading="lazy"></iframe>
+      <h2>г.Печора, ул. Первомайская д.25</h2>
+    </div>
+  </section>
+</body>
+
+</html>

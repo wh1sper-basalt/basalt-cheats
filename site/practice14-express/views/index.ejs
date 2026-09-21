@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PR14 · Express demo</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">PR14 · Express</a>
+  <nav>
+    <a href="/hello.html">Static</a>
+    <a href="/greet/Node" target="_blank" rel="noopener">/greet/Node</a>
+    <a href="/api/echo?name=demo&role=admin" target="_blank" rel="noopener">GET /api/echo</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1>Практика 14 — ExpressJS</h1>
+  <p class="muted">
+    Сервер запущен. Время запроса: <strong><%= time %></strong>.
+    Логи запросов видны в терминале, где работает <code>npm start</code>.
+  </p>
+
+  <div class="row">
+    <!-- GET -->
+    <section class="card">
+      <h2>GET → параметры запроса</h2>
+      <p class="muted">Форма отправляет GET-запрос на <code>/api/echo</code>. Данные уходят в query-string.</p>
+      <form action="/api/echo" method="get">
+        <label for="g-name">name</label>
+        <input id="g-name" type="text" name="name" placeholder="Например, Node">
+
+        <label for="g-role">role</label>
+        <input id="g-role" type="text" name="role" placeholder="admin">
+
+        <button type="submit">Отправить GET</button>
+      </form>
+    </section>
+
+    <!-- POST -->
+    <section class="card">
+      <h2>POST → тело запроса</h2>
+      <p class="muted">Форма отправляет POST на <code>/api/echo</code>. Данные уходят в теле запроса.</p>
+      <form action="/api/echo" method="post">
+        <label for="p-name">name</label>
+        <input id="p-name" type="text" name="name" placeholder="Например, Express">
+
+        <label for="p-email">email</label>
+        <input id="p-email" type="email" name="email" placeholder="user@example.com">
+
+        <label for="p-message">message</label>
+        <textarea id="p-message" name="message" rows="3" placeholder="Текст сообщения"></textarea>
+
+        <button type="submit">Отправить POST</button>
+      </form>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Проверка 404</h2>
+    <p class="muted">
+      Откройте несуществующий путь — например,
+      <a href="/this/does/not/exist" target="_blank" rel="noopener"><code>/this/does/not/exist</code></a> —
+      Express вернёт кастомную страницу 404.
+    </p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Node.js + Express + EJS</span>
+  <span>Практика 14 · Basalt</span>
+</footer>
+</body>
+</html>

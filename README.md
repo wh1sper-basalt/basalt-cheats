@@ -1,4 +1,4 @@
-# Basalt Cheats (official)
+# Basalt Cheats (education version)
 
 Многостраничная витрина магазина приватных читов: **PHP + MySQL**, RU/EN, покупка по цепочке **игры → модули → планы → checkout**.
 
@@ -13,7 +13,9 @@
 ## Quick start (XAMPP)
 
 1. DocumentRoot или alias на [`site/`](site/) (типичный URL: `http://localhost/new-age/official/site/`).
-2. Импорт SQL (phpMyAdmin или CLI): [`basalt_cheats.sql`](site/database/basalt_cheats.sql)
+2. Импорт SQL (phpMyAdmin или CLI):
+   - **Всё сразу:** [`site/database/FULL.sql`](site/database/FULL.sql) — `basalt_cheats` + практики (рекомендуется)
+   - **Поштучно:** [`basalt_cheats.sql`](site/database/basalt_cheats.sql), [`practice10.sql`](site/database/practice10.sql), [`db_sweetty.sql`](site/database/db_sweetty.sql), [`practice13.sql`](site/database/practice13.sql)
 3. Настройки подключения: [`site/config/database.php`](site/config/database.php) и при необходимости `DB_*` в окружении.
 4. Base path для подпапки Apache: [`site/config/site.yaml`](site/config/site.yaml) → `web_base`.
 
@@ -22,12 +24,23 @@
 | БД | Назначение | Config |
 |----|------------|--------|
 | `basalt_cheats` | Каталог, заказы, контент | `database.php` |
+| `basalt_practice10` | Страница `practice10.php` | `database_practice.php` |
+| `db_sweetty` | iframe Sweetty 7.9 / 7.10 | `database_sweetty.php` |
+| `basalt_practice13` | Музыкальный каталог ПР13 | `database_practice13.php` |
+
+### Практики (меню «⋯»)
+
+- ПР10: `practice10.php`, Sweetty 7.9 / 7.10
+- ПР11: `practice11.php`, `practice11-cities.php` (мини-сайт «День Победы»)
+- ПР12: `practice12-async.php` (async «Моя сладость»)
+- ПР13: `practice13.php`, `practice13-music/*` (группы / альбомы / треки)
+- ПР14: `practice14.php`, `practice14-express/*` (Node.js, GET & POST requests)
 
 ---
 
 ## Docker
 
-Из корня `github/`:
+Из корня `basalt-cheats/`:
 
 ```bash
 docker compose up -d --build
@@ -56,9 +69,16 @@ official/
 │   ├── actions/
 │   ├── config/
 │   ├── database/
+│   ├── practice10-sweetty/
+│   ├── practice10-sweetty-79/
+│   ├── practice11-victory/
+│   ├── practice12-async/
+│   ├── practice13-music/
+│   └── practice13-express/
 ├── docker-compose.yml
 ├── Makefile
 ├── tasks.md
+├── PRACTICE_SOLUTIONS.md
 └── IMAGES.md
 ```
 
@@ -66,6 +86,8 @@ official/
 
 ## Documentation
 
+- [`tasks.md`](tasks.md) — сверка с «Задания практик»
+- [`PRACTICE_SOLUTIONS.md`](PRACTICE_SOLUTIONS.md) — где лежит код по практикам
 - [`IMAGES.md`](IMAGES.md) — пути к изображениям
 - `DEVELOPMENT.md`, `WORK_PLAN.md`, `CHANGELOG.md`
 
@@ -73,4 +95,4 @@ official/
 
 ## License
 
-MIT — см. `LICENSE`.
+MIT LICENSE.

@@ -1,0 +1,19 @@
+<?php
+
+require_once dirname(__DIR__) . '/inc/mobile-guard.php';
+
+  //подключаем шапку
+  include("inc/header.php");
+?>
+
+  <section class="answer">
+    <div class="content">
+      <h2>СПАСИБО ЗА ОБРАЩЕНИЕ!</h2>
+      <h3>МЫ СВЯЖЕМСЯ С ВАМИ В БЛИЖАЙШЕЕ ВРЕМЯ!</h3>
+    </div>
+  </section>
+
+<?php
+  //подключаем подвал
+  include("inc/footer.php");
+?>

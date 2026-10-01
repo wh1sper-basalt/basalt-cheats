@@ -119,6 +119,25 @@ $bodyClass = trim((string) ($bodyClass ?? ''));
                             <a href="<?= h(asset('regions.php')) ?>"><?= h(__('nav.regions')) ?></a>
                             <a href="<?= h(asset('operations.php')) ?>"><?= h(__('nav.operations')) ?></a>
                             <a href="<?= h(asset('history.php')) ?>"><?= h(__('nav.history')) ?></a>
+                            <a href="<?= h(asset('index-db-blocks.php')) ?>"><?= h(__('nav.indexdb')) ?></a>
+                            <a href="<?= h(asset('iframe-target-lab.php')) ?>"><?= h(__('nav.iframe_lab')) ?></a>
+                            <a href="<?= h(asset('practice10.php')) ?>"><?= h(__('nav.practice10')) ?></a>
+                            <a href="<?= h(asset('practice10-sweetty-79.php')) ?>"><?= h(__('nav.practice10_79')) ?></a>
+                            <a href="<?= h(asset('practice10-sweetty-710.php')) ?>"><?= h(__('nav.practice10_710')) ?></a>
+                            <a href="<?= h(asset('practice11.php')) ?>"><?= h(__('nav.practice11')) ?></a>
+                            <a href="<?= h(asset('practice11-cities.php')) ?>"><?= h(__('nav.practice11_cities')) ?></a>
+                            <a href="<?= h(asset('practice12-async.php')) ?>"><?= h(__('nav.practice12')) ?></a>
+                            <a href="<?= h(asset('practice13.php')) ?>"><?= h(__('nav.practice13')) ?></a>
+                            <a href="<?= h(asset('practice14.php')) ?>"><?= h(__('nav.practice14')) ?></a>
+			    <a href="<?= h(asset('practice15.php')) ?>"><?= h(__('nav.practice15')) ?></a>
+			    <a href="<?= h(asset('practice-wp1.php')) ?>"><?= h(__('nav.practice_wp1')) ?></a>
+			    <a href="<?= h(asset('practice-wp2.php')) ?>"><?= h(__('nav.practice_wp2')) ?></a>
+			    <a href="<?= h(asset('practice-wp3.php')) ?>"><?= h(__('nav.practice_wp3')) ?></a>
+			    <a href="<?= h(asset('practice-wp4.php')) ?>"><?= h(__('nav.practice_wp4')) ?></a>
+			    <a href="<?= h(asset('practice-wp5.php')) ?>"><?= h(__('nav.practice_wp5')) ?></a>
+                            <a href="<?= h(asset('validation-lab.php')) ?>"><?= h(__('nav.validation')) ?></a>
+                            <a href="<?= h(asset('runtime-demo.php')) ?>"><?= h(__('nav.runtime')) ?></a>
+                            <a href="<?= h(asset('support-console.php')) ?>"><?= h(__('nav.console')) ?></a>
                         </div>
                     </nav>
                 </div>

@@ -1,0 +1,14 @@
+{
+  "name": "practice14-express",
+  "version": "1.0.0",
+  "description": "Practice 14 — ExpressJS basics (routes, static, 404)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2"
+  }
+}

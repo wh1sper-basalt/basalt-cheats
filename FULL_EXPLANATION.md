@@ -23,7 +23,7 @@
 
 ### 1.2. Цепочка покупки (магазин)
 
-Жёсткая последовательность снижает ошибки при оплате:
+Жесткая последовательность снижает ошибки при оплате:
 
 ```text
 games.php  →  cheats.php  →  cheat.php (или plans.php)  →  checkout.php
@@ -35,7 +35,7 @@ games.php  →  cheats.php  →  cheat.php (или plans.php)  →  checkout.php
 - **План** (`key_plans`: дни подписки или количество NFA-аккаунтов).
 - **Checkout:** уникальная QR-сессия, форма контактов, запись в `payment_requests`.
 
-Переходы строятся функцией `url_to('cheats.php', ['game' => 'rust'])` — всегда с учётом `web_base` / подпапки Apache.
+Переходы строятся функцией `url_to('cheats.php', ['game' => 'rust'])` — всегда с учетом `web_base` / подпапки Apache.
 
 ### 1.3. Локализация (RU / EN)
 
@@ -57,8 +57,9 @@ games.php  →  cheats.php  →  cheat.php (или plans.php)  →  checkout.php
 | `basalt_practice10` | Изолированные блоки для `practice10.php` |
 | `db_sweetty` | Учебный сайт Sweetty (iframe ПР10) |
 | `basalt_practice13` | Группы / альбомы / треки (ПР13) |
+| `wp_lab` | Отдельная установка WordPress для практик WP1–WP5 (вне `site/`) |
 
-Основная логика магазина **не смешивается** с учебными дампами — только обёртки-страницы и iframe.
+Основная логика магазина **не смешивается** с учебными дампами — только обертки-страницы и iframe.
 
 ### 1.6. Frontend
 
@@ -139,7 +140,7 @@ flowchart TD
 | [`practice10-sweetty/connect.php`](site/practice10-sweetty/connect.php) | `config/database_sweetty.php` | `db_sweetty` |
 | [`connect_practice13.php`](site/connect_practice13.php) | `config/database_practice13.php` | `basalt_practice13` |
 
-`connect.php` создаёт `$mysqli`, при необходимости таблицу `user_auth_tokens`, вызывает восстановление сессии по cookie.
+`connect.php` создает `$mysqli`, при необходимости таблицу `user_auth_tokens`, вызывает восстановление сессии по cookie.
 
 ### 4.3. `config/`
 
@@ -160,7 +161,7 @@ flowchart TD
 |------|------------|
 | [`header.php`](site/components/header.php) | `<html>`, CSS, фон (orbs + canvas), glass-dock nav, язык, Telegram, аккаунт, выпадающее меню «⋯» |
 | [`footer.php`](site/components/footer.php) | Подвал, ссылки на игры, скрипты `network-bg.js` + `main.js` |
-| [`breadcrumbs.php`](site/components/breadcrumbs.php) | Хлебные крошки (массив `$breadcrumbs` задаёт страница) |
+| [`breadcrumbs.php`](site/components/breadcrumbs.php) | Хлебные крошки (массив `$breadcrumbs` задает страница) |
 
 ### 4.6. [`.htaccess`](site/.htaccess)
 
@@ -242,12 +243,17 @@ flowchart TD
 | [`practice10.php`](site/practice10.php) | ПР10 | Чтение/запись в `basalt_practice10` |
 | [`practice10-sweetty-79.php`](site/practice10-sweetty-79.php) | ПР10 7.9 | iframe → локальный `practice10-sweetty-79/` |
 | [`practice10-sweetty-710.php`](site/practice10-sweetty-710.php) | ПР10 7.10 | iframe → `practice10-sweetty/` |
-| [`practice11.php`](site/practice11.php) | ПР11 | Обёртка iframe «День Победы» |
+| [`practice11.php`](site/practice11.php) | ПР11 | Обертка iframe «День Победы» |
 | [`practice11-cities.php`](site/practice11-cities.php) | ПР11 | Города-герои |
 | [`practice12-async.php`](site/practice12-async.php) | ПР12 | Async загрузка фрагментов |
 | [`practice13.php`](site/practice13.php) | ПР13 | Вкладки → iframe `practice13-music/*` |
-| [`practice14.php`](site/practice14.php) | ПР14 | Обёртка iframe `practice14-express/*` |
-| [`practice15.php`](site/practice15.php) | ПР15 | Обёртка iframe `practice15-express/*` |
+| [`practice14.php`](site/practice14.php) | ПР14 | Обертка iframe `practice14-express/*` |
+| [`practice15.php`](site/practice15.php) | ПР15 | Обертка iframe `practice15-express/*` |
+| [`practice-wp1.php`](site/practice-wp1.php) | WP1 | Обертка iframe → `http://localhost/wp-lab/` |
+| [`practice-wp2.php`](site/practice-wp2.php) | WP2 | Лендинг Gutenberg, якорная навигация |
+| [`practice-wp3.php`](site/practice-wp3.php) | WP3 | WooCommerce: магазин, товары, заказы, настройки запасов |
+| [`practice-wp4.php`](site/practice-wp4.php) | WP4 | Checkout с кастомным полем + PDF-инвойс |
+| [`practice-wp5.php`](site/practice-wp5.php) | WP5 | bbPress: форумы, новая тема, админка форумов |
 | [`support-console.php`](site/support-console.php) | — | Несколько iframe поддержки |
 
 ### 9.1. Подпроекты внутри `site/`
@@ -329,4 +335,57 @@ flowchart TD
 3. **Пустой каталог** — таблицы `games` / `cheats` пусты или `is_enabled = 0`.
 4. **Слайдер без картинок** — положить `{slug}-001.webp` … `-003.webp` в `assets/img/cheats/albums/` или переимпортировать `cheat_media`.
 5. **Практика 10/13** — импортировать **отдельные** SQL и configs, не только основную БД.
+
+---
+
+## 14. WordPress-практики (WP1–WP5)
+
+Пять учебных работ по WordPress/WooCommerce/bbPress. В отличие от остальных
+практик, они **не встроены в `site/`**, а работают как отдельный сайт на том же
+Apache.
+
+### 14.1. Развертывание
+
+```sql
+CREATE DATABASE wp_lab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+Файлы WordPress: c:\xampp\htdocs\wp-lab\. Установка проходит через мастер
+http://localhost/wp-lab/ (БД wp_lab, пользователь MySQL root без пароля —
+дефолт XAMPP). Постоянные ссылки: Настройки → Постоянные ссылки → «Название
+записи».
+
+### 14.2. Дочерняя тема my-child-theme
+
+**Путь:** wp-lab/wp-content/themes/my-child-theme/
+
+| Файл | Содержимое |
+|------|------------|
+| [`style.css`](wp-lab/wp-content/themes/my-child-theme/style.css) | Подключение родителя, scroll-behavior: smooth, стили кнопок, FAQ-аккордеон |
+| [`functions.php`](wp-lab/wp-content/themes/my-child-theme/functions.php) | Хуки WooCommerce (ПР3, ПР4) и bbPress (ПР5) |
+
+### 14.3. Плагины
+
+| Практика | Плагин | Точное имя в каталоге WP |
+|----------|--------|--------------------------|
+| WP3, WP4 | WooCommerce | WooCommerce |
+| WP4 | PDF-инвойсы | PDF Invoices & Packing Slips for WooCommerce |
+| WP5 | bbPress | bbPress |
+
+### 14.3. Обертки в проекте
+
+site/practice-wp{1..5}.php — единый шаблон: hero с badge WP-N,
+card card-hover stack, панель табов (те же классы, что в practice13.php),
+iframe на http://localhost/wp-lab/<route>/.
+
+Панели в каждой обертке:
+
+| Обертка | Панели |
+|---------|--------|
+| WP1 | Сайт / Админка / Обо мне / Контакты |
+| WP2 | Лендинг / Hero / Услуги / Контакты |
+| WP3 | Магазин / Товары / Заказы / Настройки |
+| WP4 | Оформление / Заказы / PDF / Плагины |
+| WP5 | Форумы / Новая тема / Админка форумов / Настройки |
+
 

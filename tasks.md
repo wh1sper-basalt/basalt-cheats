@@ -4,12 +4,12 @@
 
 **Резервная копия** этой ветки на момент работ: `c:\xampp\htdocs\official-backup-2026-04-21_0-52` (копия каталога `official/`, без удаления оригинала).
 
-## ПР6 — HTML-валидация формы
+## ПР6 – HTML-валидация формы
 
 | | |
 |--|--|
 | **Суть** | `pattern`, `required`, `min`/`max`, radio/select по умолчанию, `reset`/`submit`. |
-| **Решение в official** | [`site/validation-lab.php`](site/validation-lab.php) — отдельная лаборатория; ссылка в выпадающем меню ([`site/components/header.php`](site/components/header.php), `#nav-drawer`). |
+| **Решение в official** | [`site/validation-lab.php`](site/validation-lab.php) – отдельная лаборатория; ссылка в выпадающем меню ([`site/components/header.php`](site/components/header.php), `#nav-drawer`). |
 | **Эквивалент** | Тексты полей локализованы (RU/EN), логика совпадает с эталоном. |
 
 **Фрагмент (пример строк 18–40):**
@@ -20,19 +20,19 @@
         <label for="name"><?= $ru
             ? 'Имя (кириллица, пробел, дефис; 2–10 символов)'
             : 'Name (Cyrillic, space, hyphen; 2–10 chars)' ?></label>
-        <input id="name" type="text" required pattern="[а-яА-ЯёЁ\-\s]{2,10}" placeholder="Иван">
+        <input id="name" type="text" required pattern="[а-яА-Яее\-\s]{2,10}" placeholder="Иван">
         ...
         <label><input type="radio" name="sex" value="f" checked> <?= $ru ? 'женский' : 'female' ?></label>
 ```
 
 ---
 
-## ПР8 — примеры PHP / JS
+## ПР8 – примеры PHP / JS
 
 | | |
 |--|--|
 | **Суть** | Вставка PHP (`echo`, `print`, комментарии) и клиентского JS. |
-| **Решение** | [`site/runtime-demo.php`](site/runtime-demo.php) — объединённое демо; пароли из эталона **не** копируются, вместо них нейтральные `login`/`role`. |
+| **Решение** | [`site/runtime-demo.php`](site/runtime-demo.php) – объединенное демо; пароли из эталона **не** копируются, вместо них нейтральные `login`/`role`. |
 
 **Фрагмент (строки 34–48):**
 
@@ -49,11 +49,11 @@
 
 ---
 
-## ПР8 — несколько `iframe` (лабораторная сетка)
+## ПР8 – несколько `iframe` (лабораторная сетка)
 
 | | |
 |--|--|
-| **Решение** | [`site/support-console.php`](site/support-console.php) + [`site/frames/*.php`](site/frames) — четыре статичных `iframe` с микро-страницами поддержки. |
+| **Решение** | [`site/support-console.php`](site/support-console.php) + [`site/frames/*.php`](site/frames) – четыре статичных `iframe` с микро-страницами поддержки. |
 
 **Фрагмент (строки 18–41):**
 
@@ -66,7 +66,7 @@
 
 ---
 
-## ПР8 — `city-today.html` (ссылки `target` → именованный `iframe`)
+## ПР8 – `city-today.html` (ссылки `target` → именованный `iframe`)
 
 | | |
 |--|--|
@@ -88,13 +88,13 @@
 
 ---
 
-## ПР9 — БД, `connect.php`, вывод контента
+## ПР9 – БД, `connect.php`, вывод контента
 
 | | |
 |--|--|
 | **Суть** | Таблица с HTML, подключение, вывод на странице. |
 | **Подключение** | [`site/connect.php`](site/connect.php) (`mysqli`) |
-| **Вывод всех блоков `index_page`** | [`site/index-db-blocks.php`](site/index-db-blocks.php) — цикл по `id_element`, поле `content_ru` / `content_en` + [`fix_db_hrefs()`](site/bootstrap.php) для подпапок. |
+| **Вывод всех блоков `index_page`** | [`site/index-db-blocks.php`](site/index-db-blocks.php) – цикл по `id_element`, поле `content_ru` / `content_en` + [`fix_db_hrefs()`](site/bootstrap.php) для подпапок. |
 
 **Фрагмент запроса и вывода (строки 19–37):**
 
@@ -111,13 +111,13 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 | | |
 |--|--|
 | **В official** | Строка `id_element=6`, `alias=map` в [`site/database/basalt_cheats.sql`](site/database/basalt_cheats.sql); отображается на [`index-db-blocks.php`](site/index-db-blocks.php). |
-| **Дополнительно** | Полноэкранная карта/контекст — [`site/faq.php`](site/faq.php) (отдельно от `index_page`). |
+| **Дополнительно** | Полноэкранная карта/контекст – [`site/faq.php`](site/faq.php) (отдельно от `index_page`). |
 
 **Существующая БД без строки `map`:** переимпортируйте [`site/database/FULL.sql`](site/database/FULL.sql) или [`basalt_cheats.sql`](site/database/basalt_cheats.sql).
 
 ---
 
-## ПР9 — «торты и начинки» (роль данных)
+## ПР9 – «торты и начинки» (роль данных)
 
 | Курс | Official (эквивалент) |
 |------|------------------------|
@@ -125,11 +125,11 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 | Начинки / позиции | [`cheats.php`](site/cheats.php), [`plans.php`](site/plans.php) |
 | Оформление | [`checkout.php`](site/checkout.php) |
 
-[`cakes.txt`](../Задания%20практик/cakes.txt) в код не копировался; наполнение витрины — игры и модули в [`basalt_cheats.sql`](site/database/basalt_cheats.sql).
+[`cakes.txt`](../Задания%20практик/cakes.txt) в код не копировался; наполнение витрины – игры и модули в [`basalt_cheats.sql`](site/database/basalt_cheats.sql).
 
 ---
 
-## ПР8 — многостраничный сайт «Печора» (полный HTML-набор)
+## ПР8 – многостраничный сайт «Печора» (полный HTML-набор)
 
 | | |
 |--|--|
@@ -157,16 +157,16 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 
 ---
 
-## ПР11 — «День Победы» (Bootstrap)
+## ПР11 – «День Победы» (Bootstrap)
 
 | | |
 |--|--|
-| **В official** | Побочный мини-сайт: [`site/practice11-victory/`](site/practice11-victory/), обёртки [`practice11.php`](site/practice11.php), [`practice11-cities.php`](site/practice11-cities.php) |
+| **В official** | Побочный мини-сайт: [`site/practice11-victory/`](site/practice11-victory/), обертки [`practice11.php`](site/practice11.php), [`practice11-cities.php`](site/practice11-cities.php) |
 | **На витрину** | Не переносится (другая тематика) |
 
 ---
 
-## ПР12 — Async «Моя сладость» (7.13)
+## ПР12 – Async «Моя сладость» (7.13)
 
 | | |
 |--|--|
@@ -175,7 +175,7 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 
 ---
 
-## ПР13 — Группы / альбомы / треки (MySQL)
+## ПР13 – Группы / альбомы / треки (MySQL)
 
 | | |
 |--|--|
@@ -184,7 +184,7 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 
 ---
 
-## ПР14 — GET & POST requests, custom 404 (Node.js)
+## ПР14 – GET & POST requests, custom 404 (Node.js)
 
 | | |
 |--|--|
@@ -193,7 +193,7 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 
 ---
 
-## ПР15 — register, login, dashboard (Node.js)
+## ПР15 – register, login, dashboard (Node.js)
 
 | | |
 |--|--|
@@ -204,4 +204,50 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 
 ## Навигация «⋯» (актуально)
 
-ПР8–ПР9 лаборатории + ПР10–ПР15 — см. [`site/components/header.php`](site/components/header.php) (`.nav-secondary-links`).
+ПР8–ПР9 lab + ПР10–ПР15 – см. [`site/components/header.php`](site/components/header.php) (`.nav-secondary-links`).
+WP1–WP5 (WordPress / WooCommerce / bbPress) – см. [`site/components/header.php`](site/components/header.php) (`.nav-secondary-links`).
+
+---
+
+## WP1–WP5 – WordPress / WooCommerce / bbPress
+
+### Подготовка (общая для всех WP-практик)
+
+```sql
+CREATE DATABASE wp_lab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+- WordPress: `edu\wp-lab\`
+- Дочерняя тема: `wp-lab/wp-content/themes/my-child-theme/`
+- Обертки Basalt: `site/practice-wp1.php ... site/practice-wp5.php`
+- Локализация: `site/lang/ru.php, site/lang/en.php` (ключи `practice_wp*`)
+
+### Карта практик
+
+WordPress разворачивается **отдельно** от `site/`, поэтому решения по WP не
+живут в тех же файлах, что практики 6–15.
+
+| Практика | Где искать решение | Обертка |
+|----------|--------------------|---------|
+| WP1 | админка WP + `my-child-theme/style.css`, `functions.php` (`wp_enqueue_scripts`) | `site/practice-wp1.php` |
+| WP2 | страница «Главная Landing» в Gutenberg + `style.css` (`scroll-behavior: smooth`) | `site/practice-wp2.php` |
+| WP3 | WooCommerce + `functions.php` (`woocommerce_variable_price_html`, `woocommerce_sale_flash`, `woocommerce_single_product_summary`) | `site/practice-wp3.php` |
+| WP4 | WooCommerce checkout + `functions.php` (`woocommerce_checkout_fields`, `wpo_wcpdf_after_billing_address`, `woocommerce_package_rates`) | `site/practice-wp4.php` |
+| WP5 | bbPress + `functions.php` (`bbp_theme_before_topic_form_submit_wrapper`, `bbp_new_topic_pre_extras`, `bbp_new_topic_post_extras`, `bbp_theme_before_topic_content`) | `site/practice-wp5.php` |
+
+### Навигация
+
+Ссылки добавляются в выпадающее меню рядом с ПР14 / ПР15 в `site/components/header.php` (`#nav-drawer`):
+
+```php
+<a href="<?= h(asset('practice-wp1.php')) ?>"><?= h(__('nav.practice_wp1')) ?></a>
+<a href="<?= h(asset('practice-wp2.php')) ?>"><?= h(__('nav.practice_wp2')) ?></a>
+<a href="<?= h(asset('practice-wp3.php')) ?>"><?= h(__('nav.practice_wp3')) ?></a>
+<a href="<?= h(asset('practice-wp4.php')) ?>"><?= h(__('nav.practice_wp4')) ?></a>
+<a href="<?= h(asset('practice-wp5.php')) ?>"><?= h(__('nav.practice_wp5')) ?></a>
+```
+
+### Не входит в дамп FULL.sql
+
+БД wp_lab не импортируется через site/database/FULL.sql – она
+принадлежит установке WordPress и создаётся вручную (см. SQL выше).

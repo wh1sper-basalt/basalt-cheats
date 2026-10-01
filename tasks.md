@@ -184,7 +184,7 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 
 ---
 
-## ПР13 — Группы / альбомы / треки (MySQL)
+## ПР14 — GET & POST requests, custom 404 (Node.js)
 
 | | |
 |--|--|
@@ -193,6 +193,15 @@ $res = $mysqli->query('SELECT `id_element`, `alias`, `' . $col . '` AS body FROM
 
 ---
 
+## ПР15 — register, login, dashboard (Node.js)
+
+| | |
+|--|--|
+| **В official** | [`site/practice15-express/`](site/practice15-express/), [`practice15-express.php`](site/practice15-express.php) |
+| **На витрину** | Не переносится |
+
+---
+
 ## Навигация «⋯» (актуально)
 
-ПР8–ПР9 лаборатории + ПР10–ПР14 — см. [`site/components/header.php`](site/components/header.php) (`.nav-secondary-links`).
+ПР8–ПР9 лаборатории + ПР10–ПР15 — см. [`site/components/header.php`](site/components/header.php) (`.nav-secondary-links`).

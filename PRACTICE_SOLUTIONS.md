@@ -1,6 +1,5 @@
 # Basalt Cheats — разбор решений (практики 3–9)
 
-Ниже собрал, что именно реализовано, где находится, и какие строки смотреть.
 Формат: **задача → файл → строки → кодовый блок**.
 
 ---
@@ -376,10 +375,12 @@ img { -webkit-user-drag: none; pointer-events: none; }
 
 ---
 
-## Примечание для защиты
+## Практика 15 — Работа с Node.js (register, login, dashboard)
 
-Если преподаватель просит «почему так», основной аргумент:
-- проект собран по цепочке **каталог → модуль → срок → checkout**;
-- данные хранятся в нормализованной схеме (`games`, `cheats`, `key_plans`, `payment_requests`);
-- UI реализует UX-требования: фильтрация, single-open FAQ, расширенные отзывы, fallback/конфиг;
-- все изменения привязаны к конкретным файлам и строкам выше.
+| Задача | Файл |
+|--------|------|
+| Настройки сервера | `site/practice15-express/server.js`, `site/practice15-express/package.json`, `site/practice15-express/package-lock.json` |
+| База страницы | `site/practice15-express/views/index.ejs`, `site/practice15-express/views/register.ejs`, `site/practice15-express/views/login.ejs`, `site/practice15-express/views/dashboard.ejs` |
+| Обёртка Basalt | `site/practice15-express.php` |
+
+# Запуск сервера отдельно от XAMPP через **npm start** внутри каталога `site/practice15-express/`

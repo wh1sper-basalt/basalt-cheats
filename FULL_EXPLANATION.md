@@ -247,6 +247,7 @@ flowchart TD
 | [`practice12-async.php`](site/practice12-async.php) | ПР12 | Async загрузка фрагментов |
 | [`practice13.php`](site/practice13.php) | ПР13 | Вкладки → iframe `practice13-music/*` |
 | [`practice14.php`](site/practice14.php) | ПР14 | Обёртка iframe `practice14-express/*` |
+| [`practice15.php`](site/practice15.php) | ПР15 | Обёртка iframe `practice15-express/*` |
 | [`support-console.php`](site/support-console.php) | — | Несколько iframe поддержки |
 
 ### 9.1. Подпроекты внутри `site/`
@@ -262,6 +263,8 @@ flowchart TD
 **`practice13-music/`** — PHP-каталог музыки: `index.php` (группы), `albums.php`, `tracks.php`, `inc/layout-top.php`, `inc/layout-bottom.php` (без дублирующей nav внутри iframe).
 
 **`practice14-express/`** — статический блок для обработки GET & POST запросов с помощью Node.js.
+
+**`practice15-express/`** — статический блок для обработки login, register запросов и перехода в лк пользователя с помощью Node.js.
 
 ---
 

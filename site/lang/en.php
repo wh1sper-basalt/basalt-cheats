@@ -38,6 +38,7 @@ return [
     'nav.practice13_albums' => 'PR13 Albums',
     'nav.practice13_tracks' => 'PR13 Tracks',
     'nav.practice14' => 'PR14 Express',
+    'nav.practice15' => 'PR15 Express',
     'lang.ru' => 'RU',
     'lang.en' => 'EN',
     'footer.rights' => 'All rights reserved.',

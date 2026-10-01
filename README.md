@@ -35,6 +35,7 @@
 - ПР12: `practice12-async.php` (async «Моя сладость»)
 - ПР13: `practice13.php`, `practice13-music/*` (группы / альбомы / треки)
 - ПР14: `practice14.php`, `practice14-express/*` (Node.js, GET & POST requests)
+- ПР15: `practice15.php`, `practice15-express/*` (Node.js, register, login, dashboard)
 
 ---
 
@@ -62,7 +63,7 @@ make lint
 ## Project layout
 
 ```
-official/
+edu/
 ├── site/                   # DocumentRoot
 │   ├── assets/
 │   ├── components/
@@ -74,7 +75,9 @@ official/
 │   ├── practice11-victory/
 │   ├── practice12-async/
 │   ├── practice13-music/
-│   └── practice13-express/
+│   ├── practice13-express/
+│   ├── practice14-express/
+│   └── practice15-express/
 ├── docker-compose.yml
 ├── Makefile
 ├── tasks.md

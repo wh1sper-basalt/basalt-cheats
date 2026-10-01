@@ -129,6 +129,7 @@ $bodyClass = trim((string) ($bodyClass ?? ''));
                             <a href="<?= h(asset('practice12-async.php')) ?>"><?= h(__('nav.practice12')) ?></a>
                             <a href="<?= h(asset('practice13.php')) ?>"><?= h(__('nav.practice13')) ?></a>
                             <a href="<?= h(asset('practice14.php')) ?>"><?= h(__('nav.practice14')) ?></a>
+			    <a href="<?= h(asset('practice15.php')) ?>"><?= h(__('nav.practice15')) ?></a>
                             <a href="<?= h(asset('validation-lab.php')) ?>"><?= h(__('nav.validation')) ?></a>
                             <a href="<?= h(asset('runtime-demo.php')) ?>"><?= h(__('nav.runtime')) ?></a>
                             <a href="<?= h(asset('support-console.php')) ?>"><?= h(__('nav.console')) ?></a>

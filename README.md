@@ -1,168 +1,68 @@
-# Basalt Cheats (education version)
+# Basalt Cheats – Deployments
 
-Многостраничная витрина магазина приватных читов: **PHP + MySQL**, RU/EN, покупка по цепочке **игры → модули → планы → checkout**.
-
-**Stack:** PHP 8.x (XAMPP / Apache), MariaDB/MySQL, vanilla JS (точечно), CSS.
-
-**Мобильные устройства:** витрина и практики под `site/` редиректят на [`site/mobile-blocked.php`](site/mobile-blocked.php). Для локальной проверки с эмуляцией телефона в DevTools: `?desktop=1` (cookie на 24 ч).
-
-**DevTools:** client-side guard в [`site/assets/js/devtools-guard.js`](site/assets/js/devtools-guard.js) (горячие клавиши, ПКМ, overlay при открытой панели). Полная блокировка в браузере невозможна при отключенном JS.
+Бинарные установщики и архивы плагинов для развёртывания практик.
+Сами файлы в репозитории не хранятся (LFS / внешний диск) – этот README
+описывает, что и зачем нужно.
 
 ---
 
-## Quick start (XAMPP)
+## Файлы
 
-1. DocumentRoot или alias на [`site/`](site/) (типичный URL: `http://localhost/new-age/official/site/`).
-2. Импорт SQL (phpMyAdmin или CLI):
-   - **Все сразу:** [`site/database/FULL.sql`](site/database/FULL.sql) — `basalt_cheats` + практики (рекомендуется)
-   - **Поштучно:** [`basalt_cheats.sql`](site/database/basalt_cheats.sql), [`practice10.sql`](site/database/practice10.sql), [`db_sweetty.sql`](site/database/db_sweetty.sql), [`practice13.sql`](site/database/practice13.sql)
-3. Настройки подключения: [`site/config/database.php`](site/config/database.php) и при необходимости `DB_*` в окружении.
-4. Base path для подпапки Apache: [`site/config/site.yaml`](site/config/site.yaml) → `web_base`.
-
-### Базы данных
-
-| БД | Назначение | Config |
-|----|------------|--------|
-| `basalt_cheats` | Каталог, заказы, контент | `database.php` |
-| `basalt_practice10` | Страница `practice10.php` | `database_practice.php` |
-| `db_sweetty` | iframe Sweetty 7.9 / 7.10 | `database_sweetty.php` |
-| `basalt_practice13` | Музыкальный каталог ПР13 | `database_practice13.php` |
-| `wp_lab` | Отдельная установка WordPress для практик WP1–WP5 | `wp-config.php` (вне репо) |
-
-### Практики (меню «⋯»)
-
-- ПР10: `practice10.php`, Sweetty 7.9 / 7.10
-- ПР11: `practice11.php`, `practice11-cities.php` (мини-сайт «День Победы»)
-- ПР12: `practice12-async.php` (async «Моя сладость»)
-- ПР13: `practice13.php`, `practice13-music/*` (группы / альбомы / треки)
-- ПР14: `practice14.php`, `practice14-express/*` (Node.js, GET & POST requests)
-- ПР15: `practice15.php`, `practice15-express/*` (Node.js, register, login, dashboard)
-- WP1: `practice-wp1.php` (WordPress: установка, контент, дочерняя тема)
-- WP2: `practice-wp2.php` (Landing Page, якоря, smooth scroll)
-- WP3: `practice-wp3.php` (WooCommerce: каталог, склад, цены «от X»)
-- WP4: `practice-wp4.php` (Checkout: кастомное поле, PDF-инвойс)
-- WP5: `practice-wp5.php` (bbPress: форум, мета-поле темы)
-
-```text
-WordPress для WP1–WP5 разворачивается отдельно: `c:\xampp\htdocs\wp-lab\`,
-БД `wp_lab` (создать вручную), дочерняя тема `my-child-theme`.
-Обертки — iframe на `http://localhost/wp-lab/`, как у ПР14/ПР15.
-```
+| Файл | Назначение | Куда ставить |
+|------|------------|--------------|
+| `rustup-init.exe` | Установщик Rust toolchain (rustup) | Windows x64 |
+| `wordpress-7.1-ru_RU.zip` | WordPress 7.1, русская сборка | `c:\xampp\htdocs\wp-lab\` |
+| `node-v24.21.0-win-x64.zip` | Node.js 24 LTS (portable) | любая папка / `%PATH%` |
+| `woocommerce.11.1.2.zip` | Плагин WooCommerce | WP → Плагины → Загрузить |
+| `woocommerce-pdf-invoices-packing-slips.5.16.3.zip` | PDF-инвойсы для WooCommerce | WP → Плагины → Загрузить |
+| `bbpress.2.6.19.zip` | Плагин bbPress (форум) | WP → Плагины → Загрузить |
 
 ---
 
-## Docker
+## Для каких практик
 
-Из корня `basalt-cheats/`:
-
-```bash
-docker compose up -d --build
-make import-sql
-```
-
----
-
-## WordPress-практики (WP1–WP5)
-
-Практики WP1–WP5 требуют **отдельной установки WordPress** вне репозитория.
-Обертки `site/practice-wp{1..5}.php` используют iframe на локальный WP.
-
-В директории basalt-cheats/wp-lab/ для ознакомления оставил только две директории:
-
-| Директория | Значение |
-|------------|----------|
-| `basalt-cheats\wp-lab\wp-content\plugins\` | Оставил три директории основных плагинов (самих плагинов нет, только их названия и readme.txt для уменьшения объема проекта репозитория GitHub – для выполнения практических работ WP1-WP5 |
-| `basalt-cheats\wp-lab\wp-content\themes\` | Оставил `...\my-child-theme\` (`functions.php`, `style.css`), необходимую для выполнения практических работ |
-
-### 1. Создайте БД
-
-В phpMyAdmin или через MySQL CLI:
-
-```sql
-CREATE DATABASE wp_lab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-### 2. Установите WordPress
-
-* Скачать: https://ru.wordpress.org/download/
-* Распаковать в c:\xampp\htdocs\wp-lab\
-* Открыть http://localhost/wp-lab/, пройти мастер установки:
-    * БД: wp_lab
-    * Пользователь MySQL: root (пароль пустой — дефолт XAMPP)
-    * Префикс таблиц: wp_
-* Настройки → Постоянные ссылки → выбрать «Название записи» (/%postname%/).
-
-### 3. Плагины
-
-Активировать по порядку:
-| Практика | Плагин |
-|----------|--------|
-| WP3, WP4 | WooCommerce |
-| WP4 | PDF Invoices & Packing Slips for WooCommerce |
-| WP5 | bbPress |
-
-### 4. Дочерняя тема
-
-Скопировать `my-child-theme/` из репозитория в
-`wp-lab/wp-content/themes/my-child-theme/` и активировать в
-**Внешний вид → Темы**.
-
-### 5. Открыть обертки
-
-- `http://localhost/site/practice-wp1.php` — WordPress Basics
-- `http://localhost/site/practice-wp2.php` — Landing Page
-- `http://localhost/site/practice-wp3.php` — WooCommerce
-- `http://localhost/site/practice-wp4.php` — Checkout
-- `http://localhost/site/practice-wp5.php` — bbPress
+- **ПР14, ПР15** (Node.js) → `node-v24.21.0-win-x64.zip`
+- **WP1–WP5** (WordPress) → `wordpress-7.1-ru_RU.zip` + плагины:
+  - WP3, WP4 → `woocommerce.11.1.2.zip`
+  - WP4 → `woocommerce-pdf-invoices-packing-slips.5.16.3.zip`
+  - WP5 → `bbpress.2.6.19.zip`
+- **Rust** → `rustup-init.exe` (запускать один раз, далее `rustup` сам обновляет toolchain)
 
 ---
 
-## Commands
+## Быстрая установка
 
-```bash
-make lint
-```
+### Node.js (ПР14, ПР15)
 
-`php -l` для всех `site/**/*.php`.
+1. Распаковать `node-v24.21.0-win-x64.zip` в удобное место (например `c:\node\`).
+2. Добавить `c:\node\` в `PATH`.
+3. Проверить:
+   ```bash
+   node -v
+   npm -v
+   ```
 
----
+### WordPress (WP1–WP5)
 
-## Project layout
-
-```
-edu/
-├── site/                   # DocumentRoot
-│   ├── assets/
-│   ├── components/
-│   ├── actions/
-│   ├── config/
-│   ├── database/
-│   ├── practice10-sweetty/
-│   ├── practice10-sweetty-79/
-│   ├── practice11-victory/
-│   ├── practice12-async/
-│   ├── practice13-music/
-│   ├── practice13-express/
-│   ├── practice14-express/
-│   └── practice15-express/
-├── docker-compose.yml
-├── Makefile
-├── tasks.md
-├── PRACTICE_SOLUTIONS.md
-└── IMAGES.md
-```
+1. В phpMyAdmin создать БД:
+   ```sql
+   CREATE DATABASE wp_lab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+2. Распаковать `wordpress-7.1-ru_RU.zip` в `c:\xampp\htdocs\wp-lab\`.
+3. Открыть `http://localhost/wp-lab/`, пройти мастер установки (БД `wp_lab`,
+MySQL-пользователь `root` без пароля).
+4. Настройки → Постоянные ссылки → «Название записи».
+5. Установить плагины из zip через Плагины → Добавить новый → Загрузить плагин.
 
 ---
 
-## Documentation
+## Примечания
 
-- [`tasks.md`](tasks.md) — сверка с «Задания практик»
-- [`PRACTICE_SOLUTIONS.md`](PRACTICE_SOLUTIONS.md) — где лежит код по практикам
-- [`IMAGES.md`](IMAGES.md) — пути к изображениям
-- `DEVELOPMENT.md`, `WORK_PLAN.md`, `CHANGELOG.md`
+Актуальные версии всегда можно скачать по этим ссылкам:
 
----
-
-## License
-
-MIT LICENSE.
+- **Node.js** – https://nodejs.org/
+- **WordPress** – https://ru.wordpress.org/download/
+- **WooCommerce** – https://wordpress.org/plugins/woocommerce/
+- **PDF Invoices** – https://wordpress.org/plugins/woocommerce-pdf-invoices-packing-slips/
+- **bbPress** – https://wordpress.org/plugins/bbpress/
+- **Rust** – https://rustup.rs/
